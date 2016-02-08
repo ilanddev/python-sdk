@@ -15,7 +15,7 @@ iland-sdk
 
 iland cloud Python SDK
 
-* Free software: ISC license
+* Free software: BSD License
 * Documentation: https://iland-sdk.readthedocs.org.
 
 Features
