@@ -17,11 +17,59 @@ iland cloud Python SDK
 
 * Free software: BSD License
 * Documentation: https://iland-sdk.readthedocs.org.
+* iland cloud API doc: https://api.ilandcloud.com.
 
-Features
---------
+============
+Introduction
+============
 
-* TODO
+This library provides a pure Python interface for the `iland cloud API
+<https://www.iland.com/>`_. It works with Python versions from 2.7+.
+
+`iland cloud <http://www.iland.com>`_ provides Enterprise-grade IaaS and this
+library is intended to make it even easier for Python programmers to use.
+
+================
+Getting the code
+================
+
+The code is hosted at https://github.com/ilanddev/python-sdk
+
+Check out the latest development version anonymously with::
+
+    $ git clone https://github.com/ilanddev/python-sdk.git
+    $ cd python-sdk
+
+==========
+Installing
+==========
+
+You can install iland-sdk from Pypi using::
+
+    $ pip install iland-sdk
+
+You can also install it using the actual checkout:
+
+    $ git clone https://github.com/ilanddev/python-sdk.git
+    $ cd python-sdk
+    $ pip install -e .
+
+=============
+Running Tests
+=============
+
+To run the unit tests:
+
+	$ make test
+
+To run the unit tests for all supported Python interpreters
+
+    $ make test-all
+
+To check your changes:
+
+    $ make lint
+
 
 Credits
 ---------

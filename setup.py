@@ -7,20 +7,21 @@ try:
 except ImportError:
     from distutils.core import setup
 
-
 with open('README.rst') as readme_file:
     readme = readme_file.read()
 
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
-requirements = [
-    # TODO: put package requirements here
-]
+requirements = ['requests==2.9.1'],
 
-test_requirements = [
-    # TODO: put package test requirements here
-]
+test_requirements = ['bumpversion==0.5.3',
+                     'wheel==0.26.0',
+                     'watchdog==0.8.3',
+                     'flake8==2.4.1',
+                     'tox==2.1.1',
+                     'coverage==4.0',
+                     'Sphinx==1.3.1'],
 
 setup(
     name='iland-sdk',
@@ -31,9 +32,9 @@ setup(
     author_email='devops@iland.com',
     url='https://github.com/ilanddev/python-sdk',
     packages=[
-        'iland-sdk',
+        '',
     ],
-    package_dir={'iland-sdk':
+    package_dir={'':
                  'iland-sdk'},
     include_package_data=True,
     install_requires=requirements,
@@ -48,7 +49,6 @@ setup(
         "Programming Language :: Python :: 2",
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
     ],
