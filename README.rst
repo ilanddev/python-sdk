@@ -5,7 +5,7 @@ iland-sdk
 .. image:: https://img.shields.io/pypi/v/iland-sdk.svg
         :target: https://pypi.python.org/pypi/iland-sdk
 
-.. image:: https://img.shields.io/travis/ilanddev/iland-sdk.svg
+.. image:: https://travis-ci.org/ilanddev/python-sdk.svg?branch=master
         :target: https://travis-ci.org/ilanddev/python-sdk
 
 .. image:: https://readthedocs.org/projects/iland-sdk/badge/?version=latest
