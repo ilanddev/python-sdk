@@ -4,14 +4,9 @@
 language: python
 sudo: false
 
-python:
-    - 2.7
-    - 3.4
-    - 3.5
-
 env:
  matrix:
-   - TOXENV=py35
+   - TOXENV=python3.5
    - TOXENV=py34
    - TOXENV=py27
    - TOXENV=pypy
