@@ -48,25 +48,27 @@ You can install iland-sdk from Pypi using::
 
     $ pip install iland-sdk
 
-You can also install it using the actual checkout:
+You can also install it using actual checkout::
 
     $ git clone https://github.com/ilanddev/python-sdk.git
+
     $ cd python-sdk
+
     $ pip install -e .
 
 =============
 Running Tests
 =============
 
-To run the unit tests:
+To run the unit tests::
 
 	$ make test
 
-To run the unit tests for all supported Python interpreters
+To run the unit tests for all supported Python interpreters::
 
     $ make test-all
 
-To check your changes:
+To check your changes::
 
     $ make lint
 
