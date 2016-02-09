@@ -9,7 +9,6 @@ env:
    - TOXENV=py34
    - TOXENV=py27
    - TOXENV=pypy
-   - TOXENV=flake8
 
 # It is currently necessary to specify python 3.5 when using py35 on Travis,
 # see https://github.com/travis-ci/travis-ci/issues/4794
