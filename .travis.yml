@@ -1,14 +1,24 @@
 # Config file for automatic testing at travis-ci.org
 # This file will be regenerated if you run travis_pypi_setup.py
 
+sudo: false
+
 language: python
-python: 3.5
 
 env:
-   - TOXENV=py35
    - TOXENV=py34
    - TOXENV=py27
    - TOXENV=pypy
+   - TOXENV=flake8
+
+# It is currently necessary to specify python 3.5 when using py35 on Travis,
+# see https://github.com/travis-ci/travis-ci/issues/4794
+matrix:
+  include:
+    - python: 3.5
+      env:
+        - TOXENV=py35
+
 
 # command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
 install: pip install -U tox
