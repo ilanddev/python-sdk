@@ -25,7 +25,7 @@ test_requirements = ['bumpversion==0.5.3',
 
 setup(
     name='iland-sdk',
-    version='0.1.0',
+    version='0.2.0',
     description="iland cloud Python SDK",
     long_description=readme + '\n\n' + history,
     author="iland Internet Solutions, Corp",
