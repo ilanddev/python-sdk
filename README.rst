@@ -89,7 +89,7 @@ To create an instance of the ``iland.Api``::
 You can then perform GET, PUT, PUSH and DELETE requests against the iland
 cloud::
 
-    >>> api.get('/user/' + USERNAME)
+    >>> user = api.get('/user/' + USERNAME)
     >>> user.get('name'))
     USERNAME
 

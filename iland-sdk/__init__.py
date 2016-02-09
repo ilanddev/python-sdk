@@ -2,4 +2,4 @@
 
 __author__ = 'iland Internet Solutions, Corp'
 __email__ = 'devops@iland.com'
-__version__ = '0.2.0'
+__version__ = '0.3.0'
