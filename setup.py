@@ -16,7 +16,7 @@ with open('HISTORY.rst') as history_file:
 requirements = ['requests==2.9.1'],
 
 test_requirements = ['bumpversion==0.5.3',
-                     'wheel==0.29.0',
+                     'wheel==0.26.0',
                      'watchdog==0.8.3',
                      'flake8==2.4.1',
                      'tox==2.1.1',
