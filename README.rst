@@ -9,7 +9,7 @@ iland-sdk
         :target: https://travis-ci.org/ilanddev/python-sdk
 
 .. image:: https://readthedocs.org/projects/iland-sdk/badge/?version=latest
-        :target: https://readthedocs.org/projects/iland-sdk/?badge=latest
+        :target: https://readthedocs.org/projects/python-sdk/?badge=latest
         :alt: Documentation Status
 
 
