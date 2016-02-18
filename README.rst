@@ -44,15 +44,20 @@ Check out the latest development version anonymously with::
     $ git clone https://github.com/ilanddev/python-sdk.git
     $ cd python-sdk
 
-==========
-Installing
-==========
+============
+Installation
+============
 
-You can install iland-sdk from Pypi using::
+At the command line::
 
     $ pip install iland-sdk
 
-You can also install it using actual checkout::
+Or, if you have virtualenvwrapper installed::
+
+    $ mkvirtualenv iland-sdk
+    $ pip install iland-sdk
+
+You can also install iland-sdk using the actual source checkout::
 
     $ git clone https://github.com/ilanddev/python-sdk.git
 
@@ -66,18 +71,15 @@ Running Tests
 
 To run the unit tests::
 
-	$ make test
+    $ make test
 
 To run the unit tests for all supported Python interpreters::
 
     $ make test-all
 
-To check your changes::
+To check your changes before submitting a pull request::
 
     $ make lint
-
-Credits
----------
 
 This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
 

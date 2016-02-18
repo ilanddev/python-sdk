@@ -38,8 +38,8 @@ is open to whoever wants to implement it.
 Write Documentation
 ~~~~~~~~~~~~~~~~~~~
 
-python-sdk could always use more documentation, whether as part of the
-official python-sdk docs, in docstrings, or even on the web in blog posts,
+iland-sdk could always use more documentation, whether as part of the
+official iland-sdk docs, in docstrings, or even on the web in blog posts,
 articles, and such.
 
 Submit Feedback
@@ -63,7 +63,7 @@ Ready to contribute? Here's how to set up `python-sdk` for local development.
 1. Fork the `python-sdk` repo on GitHub.
 2. Clone your fork locally::
 
-    $ git clone git@github.com:your_name_here/python-sdk.git
+    $ git clone https://github.com/ilanddev/python-sdk.git
 
 3. Install your local copy into a virtualenv. Assuming you have virtualenvwrapper installed, this is how you set up your fork for local development::
 
@@ -79,9 +79,9 @@ Ready to contribute? Here's how to set up `python-sdk` for local development.
 
 5. When you're done making changes, check that your changes pass flake8 and the tests, including testing other Python versions with tox::
 
-    $ flake8 iland-sdk tests
-    $ python setup.py test
-    $ tox
+    $ make lint
+    $ make test
+    $ make test-all
 
    To get flake8 and tox, just pip install them into your virtualenv.
 

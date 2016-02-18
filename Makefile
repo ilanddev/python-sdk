@@ -46,7 +46,7 @@ clean-test:
 	rm -fr htmlcov/
 
 lint:
-	flake8 iland-sdk tests
+	flake8 iland tests
 
 test:
 	python setup.py test
@@ -55,13 +55,13 @@ test-all:
 	tox
 
 coverage:
-	coverage run --source iland-sdk setup.py test
+	coverage run --source iland setup.py test
 	coverage report -m
 	coverage html
 	$(BROWSER) htmlcov/index.html
 
 docs:
-	rm -f docs/iland-sdk.rst
+	rm -f docs/iland.rst
 	rm -f docs/modules.rst
 	sphinx-apidoc -o docs/ iland
 	$(MAKE) -C docs clean
