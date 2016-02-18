@@ -5,8 +5,8 @@ import time
 
 import requests
 
-from constant import BASE_URL, ACCESS_URL, REFRESH_URL
-from log import LOG
+from .constant import BASE_URL, ACCESS_URL, REFRESH_URL
+from .log import LOG
 
 
 class Api(object):

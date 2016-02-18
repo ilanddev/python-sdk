@@ -7,6 +7,8 @@ try:
 except ImportError:
     from distutils.core import setup
 
+from setuptools import find_packages
+
 with open('README.rst') as readme_file:
     readme = readme_file.read()
 
@@ -31,11 +33,7 @@ setup(
     author="iland Internet Solutions, Corp",
     author_email='devops@iland.com',
     url='https://github.com/ilanddev/python-sdk',
-    packages=[
-        '',
-    ],
-    package_dir={'':
-                 'iland-sdk'},
+    packages=find_packages(exclude=['tests*']),
     include_package_data=True,
     install_requires=requirements,
     license="BSD",
