@@ -63,7 +63,7 @@ coverage:
 docs:
 	rm -f docs/iland-sdk.rst
 	rm -f docs/modules.rst
-	sphinx-apidoc -o docs/ iland-sdk
+	sphinx-apidoc -o docs/ iland
 	$(MAKE) -C docs clean
 	$(MAKE) -C docs html
 	$(BROWSER) docs/_build/html/index.html
