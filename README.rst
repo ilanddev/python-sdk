@@ -12,6 +12,10 @@ iland-sdk
         :target: https://readthedocs.org/projects/iland-sdk/?badge=latest
         :alt: Documentation Status
 
+.. image:: https://requires.io/github/ilanddev/python-sdk/requirements.svg?branch=master
+     :target: https://requires.io/github/ilanddev/python-sdk/requirements/?branch=master
+     :alt: Requirements Status
+
 
 iland cloud Python SDK
 
