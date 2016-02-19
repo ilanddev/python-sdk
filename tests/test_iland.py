@@ -11,7 +11,7 @@ Tests for `iland` module.
 import time
 import unittest
 
-import iland.api
+import iland
 from .apicreds import (CLIENT_ID,
                        CLIENT_SECRET,
                        USERNAME,
@@ -25,10 +25,10 @@ VDC_UUID = \
                  PASSWORD, "No credentials provided")
 class TestIland(unittest.TestCase):
     def setUp(self):
-        self._api = iland.api.Api(client_id=CLIENT_ID,
-                                  client_secret=CLIENT_SECRET,
-                                  username=USERNAME,
-                                  password=PASSWORD)
+        self._api = iland.Api(client_id=CLIENT_ID,
+                              client_secret=CLIENT_SECRET,
+                              username=USERNAME,
+                              password=PASSWORD)
 
     def tearDown(self):
         pass

@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+"""A library that provides a Python interface to the iland cloud API."""
+
 import json
 import time
 
