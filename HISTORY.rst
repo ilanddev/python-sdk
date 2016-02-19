@@ -2,6 +2,14 @@
 History
 =======
 
+0.3.0 (2016-2-18)
+------------------
+
+* docstrings and documentation
+* Housekeeping and refactoring
+* Better CI setup
+* Sphynx doc and readthedocs.org publishing.
+
 0.2.0 (2016-2-09)
 ------------------
 

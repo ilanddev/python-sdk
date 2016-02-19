@@ -5,7 +5,7 @@ Credits
 Development Lead
 ----------------
 
-* Julien Anguenot <janguenot@iland.com>
+* Julien Anguenot <julien@anguenot.org>
 
 Contributors
 ------------

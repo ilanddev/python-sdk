@@ -118,15 +118,69 @@ class Api(object):
         json_obj = json.loads(r.content[5:].decode('UTF8'))
         return json_obj
 
+    def get(self, rpath):
+        """ Perform a GET request agains the iland cloud API given its resource
+        path.
+
+        `iland.Api` will refresh the access token if non valid.
+
+        :param rpath: the resource path as a Python builtin String object
+        :return: a JSON Object or a list of JSON Objects.
+        """
+        return self._do_request(rpath)
+
+    def put(self, rpath, form_data=None):
+        """ Perform a PUT request agains the iland cloud API given its resource
+        path.
+
+        `iland.Api` will refresh the access token if non valid.
+
+        :param rpath: the resource path as a Python builtin String object
+        :param form_data: a Python builtin dict object
+        :return: a JSON Object or a list of JSON Objects.
+        """
+        self._do_request(rpath, verb='PUT', form_data=form_data)
+
+    def post(self, rpath, form_data=None):
+        """ Perform a POST request agains the iland cloud API given its resource
+        path.
+
+        `iland.Api` will refresh the access token if non valid.
+
+        :param rpath: the resource path as a Python builtin String object
+        :param form_data: a Python builtin dict object
+        :return: a JSON Object or a list of JSON Objects.
+        """
+        self._do_request(rpath, verb='POST', form_data=form_data)
+
+    def delete(self, rpath):
+        """ Perform a DELETE request agains the iland cloud API given its
+        resource path.
+
+        `iland.Api` will refresh the access token if non valid.
+
+        :param rpath:  the resource path as a Python builtin String object
+        :return: a JSON Object or a list of JSON Objects.
+        """
+        self._do_request(rpath, verb='DELETE')
+
     def get_access_token(self):
         """ Returns the access token in use for this session.
+
+        This method is exposed in case you interested in managing the token
+        life cycle yourself. `iland.Api` will refresh the token on your
+        behalf while performing queries.
 
         :return: JSON Object containing the actual access token
         """
         return self._get_access_token()
 
     def refresh_access_token(self):
-        """ Refresh token if token is None or expired.
+        """ Refresh token if token is not valid: None or expired.
+
+        This method is exposed in case you interested in managing the token
+        life cycle yourself. `iland.Api` will refresh the token on your
+        behalf while performing queries.
 
         :return: JSON Object containing the actual access token
         """
@@ -135,44 +189,10 @@ class Api(object):
     def login(self):
         """ Requests an access token.
 
+        This method is exposed in case you interested in managing the token
+        life cycle yourself. `iland.Api` will refresh the token on your
+        behalf while performing queries.
+
         :return: JSON Object containing the actual access token
         """
         return self._get_access_token()
-
-    def get(self, rpath):
-        """ Perform a GET request agains the iland cloud API given its resource
-        path.
-
-        :param rpath: the resource path as a Python builtin String object
-        :return: a JSON Object
-        """
-        return self._do_request(rpath)
-
-    def put(self, rpath, form_data=None):
-        """ Perform a PUT request agains the iland cloud API given its resource
-        path.
-
-        :param rpath: the resource path as a Python builtin String object
-        :param form_data: a Python builtin dict object
-        :return: a JSON Object
-        """
-        self._do_request(rpath, verb='PUT', form_data=form_data)
-
-    def post(self, rpath, form_data=None):
-        """ Perform a POST request agains the iland cloud API given its resource
-        path.
-
-        :param rpath: the resource path as a Python builtin String object
-        :param form_data: a Python builtin dict object
-        :return: a JSON Object
-        """
-        self._do_request(rpath, verb='POST', form_data=form_data)
-
-    def delete(self, rpath):
-        """ Perform a DELETE request agains the iland cloud API given its
-        resource path.
-
-        :param rpath:  the resource path as a Python builtin String object
-        :return: a JSON Object
-        """
-        self._do_request(rpath, verb='DELETE')
