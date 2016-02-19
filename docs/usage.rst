@@ -10,7 +10,7 @@ The API is exposed via the ``iland.Api`` class.
 
 To create an instance of the ``iland.Api``::
 
-    >>> import iland.api
+    >>> import iland
     >>> api = iland.Api(client_id=CLIENT_ID,
                         client_secret=CLIENT_SECRET,
                         username=USERNAME,
