@@ -26,9 +26,9 @@ VDC_UUID = \
 class TestIland(unittest.TestCase):
     def setUp(self):
         self._api = iland.api.Api(client_id=CLIENT_ID,
-                            client_secret=CLIENT_SECRET,
-                            username=USERNAME,
-                            password=PASSWORD)
+                                  client_secret=CLIENT_SECRET,
+                                  username=USERNAME,
+                                  password=PASSWORD)
 
     def tearDown(self):
         pass
