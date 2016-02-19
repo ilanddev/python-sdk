@@ -26,9 +26,7 @@ matrix:
         - TOX_ENV=docs
     - python: 3.5
       env:
-        - TOX_ENV=flak8
-
-
+        - TOX_ENV=flake8
 
 # command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
 install: pip install -U tox
