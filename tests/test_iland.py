@@ -12,6 +12,7 @@ import time
 import unittest
 
 import iland
+import iland.constant
 from .apicreds import (CLIENT_ID,
                        CLIENT_SECRET,
                        USERNAME,
@@ -28,7 +29,8 @@ class TestIland(unittest.TestCase):
         self._api = iland.Api(client_id=CLIENT_ID,
                               client_secret=CLIENT_SECRET,
                               username=USERNAME,
-                              password=PASSWORD)
+                              password=PASSWORD,
+                              base_url=iland.constant.BASE_URL)
 
     def tearDown(self):
         pass
@@ -106,11 +108,12 @@ class TestIland(unittest.TestCase):
 
     def test_refresh_token(self):
         self._api.login()
+        self.assertIsNotNone(self._api.get_access_token())
         expires_in = self._api._token_expiration_time
 
         # force expires for tests.
         self._api._token_expiration_time = 0
-        self._api._refresh_token()
+        self._api.refresh_access_token()
 
         new_expires_in = self._api._token_expiration_time
         self.assertTrue(new_expires_in > expires_in)

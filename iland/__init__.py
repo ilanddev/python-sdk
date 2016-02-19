@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+"""A module that provides a Python interface to the iland cloud API."""
+
 from .api import Api  # noqa
 
 __author__ = 'iland Internet Solutions, Corp'
