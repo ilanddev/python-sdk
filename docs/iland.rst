@@ -20,6 +20,14 @@ iland.constant module
     :undoc-members:
     :show-inheritance:
 
+iland.exception module
+----------------------
+
+.. automodule:: iland.exception
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 iland.log module
 ----------------
 

@@ -5,6 +5,7 @@ History
 0.3.0 (2016-2-18)
 ------------------
 
+* implement exceptions handling
 * docstrings and documentation
 * Housekeeping and refactoring
 * Better CI setup

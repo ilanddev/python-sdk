@@ -9,6 +9,7 @@ import requests
 
 from .constant import BASE_URL, ACCESS_URL, REFRESH_URL
 from .log import LOG
+from .exception import ApiException, UnauthorizedException
 
 
 class Api(object):
@@ -55,8 +56,10 @@ class Api(object):
                   'password': self._password,
                   'grant_type': 'password'}
         r = requests.post(ACCESS_URL, data=params)
-
-        self._token = json.loads(r.content.decode('ascii'))
+        json_payload = json.loads(r.content.decode('ascii'))
+        if r.status_code not in [200, 201, 202]:
+            raise UnauthorizedException(json_payload)
+        self._token = json_payload
         self._set_token_expiration_time()
         return self._token
 
@@ -76,7 +79,10 @@ class Api(object):
                           'refresh_token': self._token['refresh_token']
                           }
                 r = requests.post(REFRESH_URL, data=params)
-                self._token = json.loads(r.content.decode('ascii'))
+                json_payload = json.loads(r.content.decode('ascii'))
+                if r.status_code not in [200, 201, 202]:
+                    raise UnauthorizedException(json_payload)
+                self._token = json_payload
                 self._set_token_expiration_time()
             else:
                 self._get_access_token()
@@ -116,6 +122,8 @@ class Api(object):
         # iland cloud API prefix have to be ignored because they are here to
         # prevent JSON Hijacking
         json_obj = json.loads(r.content[5:].decode('UTF8'))
+        if r.status_code not in [200, 201, 202]:
+            raise ApiException(json_obj)
         return json_obj
 
     def get(self, rpath):
@@ -125,6 +133,8 @@ class Api(object):
         `iland.Api` will refresh the access token if non valid.
 
         :param rpath: the resource path as a Python builtin String object
+        :raises: ApiException: API requests returns an error
+        :raises: UnauthorizedException: credentials / grants invalids
         :return: a JSON Object or a list of JSON Objects.
         """
         return self._do_request(rpath)
@@ -137,6 +147,8 @@ class Api(object):
 
         :param rpath: the resource path as a Python builtin String object
         :param form_data: a Python builtin dict object
+        :raises: ApiException: API requests returns an error
+        :raises: UnauthorizedException: credentials / grants invalids
         :return: a JSON Object or a list of JSON Objects.
         """
         self._do_request(rpath, verb='PUT', form_data=form_data)
@@ -149,6 +161,8 @@ class Api(object):
 
         :param rpath: the resource path as a Python builtin String object
         :param form_data: a Python builtin dict object
+        :raises: ApiException: API requests returns an error
+        :raises: UnauthorizedException: credentials / grants invalids
         :return: a JSON Object or a list of JSON Objects.
         """
         self._do_request(rpath, verb='POST', form_data=form_data)
@@ -160,6 +174,8 @@ class Api(object):
         `iland.Api` will refresh the access token if non valid.
 
         :param rpath:  the resource path as a Python builtin String object
+        :raises: ApiException: API requests returns an error
+        :raises: UnauthorizedException: credentials / grants invalids
         :return: a JSON Object or a list of JSON Objects.
         """
         self._do_request(rpath, verb='DELETE')
@@ -171,6 +187,7 @@ class Api(object):
         life cycle yourself. `iland.Api` will refresh the token on your
         behalf while performing queries.
 
+        :raises: UnauthorizedException: credentials / grants invalids
         :return: JSON Object containing the actual access token
         """
         return self._get_access_token()
@@ -182,6 +199,7 @@ class Api(object):
         life cycle yourself. `iland.Api` will refresh the token on your
         behalf while performing queries.
 
+        :raises: UnauthorizedException: credentials / grants invalids
         :return: JSON Object containing the actual access token
         """
         return self._refresh_token()
@@ -193,6 +211,7 @@ class Api(object):
         life cycle yourself. `iland.Api` will refresh the token on your
         behalf while performing queries.
 
+        :raises: UnauthorizedException: credentials / grants invalids
         :return: JSON Object containing the actual access token
         """
         return self._get_access_token()

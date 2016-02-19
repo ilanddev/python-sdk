@@ -13,10 +13,19 @@ import unittest
 
 import iland
 import iland.constant
-from .apicreds import (CLIENT_ID,
-                       CLIENT_SECRET,
-                       USERNAME,
-                       PASSWORD)
+from iland.exception import ApiException, UnauthorizedException
+
+try:
+    # only PyCharm w/ Python3 fails here without dot
+    from apicreds import (CLIENT_ID,
+                          CLIENT_SECRET,
+                          USERNAME,
+                          PASSWORD)
+except ImportError:
+    from .apicreds import (CLIENT_ID,
+                           CLIENT_SECRET,
+                           USERNAME,
+                           PASSWORD)
 
 VDC_UUID = \
     'res01.ilandcloud.com:urn:vcloud:vdc:a066325d-6be0-4733-8d9f-7687c36f4536'
@@ -38,7 +47,7 @@ class TestIland(unittest.TestCase):
     def test_get(self):
         user = self._api.get('/user/' + USERNAME)
         self.assertEqual(USERNAME, user.get('name'))
-        self.assertTrue(len(user.keys()) > 20)
+        self.assertTrue(len(user.keys()) > 5)
 
     def test_post(self):
         user_alert_emails = self._api.get('/user/' + USERNAME +
@@ -117,3 +126,23 @@ class TestIland(unittest.TestCase):
 
         new_expires_in = self._api._token_expiration_time
         self.assertTrue(new_expires_in > expires_in)
+
+    def test_unauthorized_errors(self):
+        wrongCredsApi = iland.Api(client_id=CLIENT_ID,
+                                  client_secret=CLIENT_SECRET,
+                                  username='XXXX',
+                                  password='XXXX',
+                                  base_url=iland.constant.BASE_URL)
+        with self.assertRaises(UnauthorizedException):
+            wrongCredsApi.login()
+
+        with self.assertRaises(UnauthorizedException):
+            wrongCredsApi.get_access_token()
+
+        with self.assertRaises(UnauthorizedException):
+            wrongCredsApi.refresh_access_token()
+
+    def test_api_errors(self):
+
+        with self.assertRaises(ApiException):
+            self._api.get('/doesnotexist')
