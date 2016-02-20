@@ -118,7 +118,8 @@ class Api(object):
         elif verb == 'DELETE':
             r = requests.delete(url, headers=headers)
         else:
-            pass
+            raise ApiException({'message': 'Unsupported HTTP verb %s' % verb})
+
         # iland cloud API prefix have to be ignored because they are here to
         # prevent JSON Hijacking
         json_obj = json.loads(r.content[5:].decode('UTF8'))
