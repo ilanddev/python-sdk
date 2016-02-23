@@ -88,7 +88,7 @@ class Api(object):
                 self._get_access_token()
         return self._token
 
-    def _validToken(self):
+    def _validate_token(self):
         if self._token is not None:
             return int(round(time.time() * 1000)) < self._token_expiration_time
         return False
@@ -123,7 +123,7 @@ class Api(object):
         # iland cloud API prefix have to be ignored because they are here to
         # prevent JSON Hijacking
         json_obj = json.loads(r.content[5:].decode('UTF8'))
-        if r.status_code not in [200, 201, 202]:
+        if r.status_code not in [200, 201, 202, 204]:
             raise ApiException(json_obj)
         return json_obj
 
