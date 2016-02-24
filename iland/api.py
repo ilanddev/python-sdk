@@ -45,7 +45,7 @@ class Api(object):
 
     def _get_access_token(self):
 
-        if self._validToken():
+        if self._valid_token():
             return self._token
 
         LOG.info("SSO Request %s" % ACCESS_URL)
@@ -70,7 +70,7 @@ class Api(object):
             int(round(time.time() * 1000))
 
     def _refresh_token(self):
-        if not self._validToken():
+        if not self._valid_token():
             if self._token is not None:
                 LOG.info("SSO Request %s" % REFRESH_URL)
                 params = {'client_id': self._client_id,
@@ -88,7 +88,7 @@ class Api(object):
                 self._get_access_token()
         return self._token
 
-    def _validate_token(self):
+    def _valid_token(self):
         if self._token is not None:
             return int(round(time.time() * 1000)) < self._token_expiration_time
         return False
