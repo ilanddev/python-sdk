@@ -7,6 +7,7 @@ History
 
 * Support 204 no content HTTP return code
 * Fix naming of _validate_token method
+* update Sphynx dependency
 
 0.3.0 (2016-2-18)
 ------------------
