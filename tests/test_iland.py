@@ -1,148 +1,292 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""
-test_iland
-----------------------------------
 
-Tests for `iland` module.
-"""
-
+import json
 import time
 import unittest
 
+import requests_mock
+
 import iland
-import iland.constant
-from iland.exception import ApiException, UnauthorizedException
 
-try:
-    # only PyCharm w/ Python3 fails here without dot
-    from apicreds import (CLIENT_ID,
-                          CLIENT_SECRET,
-                          USERNAME,
-                          PASSWORD)
-except ImportError:
-    from .apicreds import (CLIENT_ID,
-                           CLIENT_SECRET,
-                           USERNAME,
-                           PASSWORD)
+BASE_URL = 'http://mock.com/iland-core/rest/v1'
 
-VDC_UUID = \
-    'res01.ilandcloud.com:urn:vcloud:vdc:a066325d-6be0-4733-8d9f-7687c36f4536'
+VALID_TOKEN_PAYLOAD = {'expires_in': 12,
+                       'access_token': 'AZERTYUIOP',
+                       'refresh_token': 'BLABLABLA'}
+
+VALID_REFRESH_TOKEN_PAYLOAD = {'expires_in': 12,
+                               'access_token': 'QWERTYUIOP',
+                               'refresh_token': 'BLOBLOBLO'}
 
 
-@unittest.skipIf(not CLIENT_ID and not CLIENT_SECRET and not USERNAME and not
-                 PASSWORD, "No credentials provided")
 class TestIland(unittest.TestCase):
+    session = None
+    adapter = None
+
     def setUp(self):
-        self._api = iland.Api(client_id=CLIENT_ID,
-                              client_secret=CLIENT_SECRET,
-                              username=USERNAME,
-                              password=PASSWORD,
-                              base_url=iland.constant.BASE_URL)
+        self.api = iland.Api(client_id='fake',
+                             client_secret='fake',
+                             username='fake',
+                             password='fake',
+                             base_url=BASE_URL)
 
-    def tearDown(self):
-        pass
+    def test_login_ok_200(self):
+        with requests_mock.mock() as m:
+            m.post(iland.ACCESS_URL,
+                   text=json.dumps(VALID_TOKEN_PAYLOAD),
+                   status_code=200)
+            self.api.login()
+            self.assertEqual(VALID_TOKEN_PAYLOAD, self.api.get_access_token())
 
-    def test_get(self):
-        user = self._api.get('/user/' + USERNAME)
-        self.assertEqual(USERNAME, user.get('name'))
-        self.assertTrue(len(user.keys()) > 5)
+    def test_login_ok_201(self):
+        with requests_mock.mock() as m:
+            m.post(iland.ACCESS_URL,
+                   text=json.dumps(VALID_TOKEN_PAYLOAD),
+                   status_code=201)
+            self.api.login()
+            self.assertEqual(VALID_TOKEN_PAYLOAD, self.api.get_access_token())
 
-    def test_post(self):
-        user_alert_emails = self._api.get('/user/' + USERNAME +
-                                          '/alert-emails')
-        self.assertTrue(len(user_alert_emails['emails']) >= 1)
-        self.assertEquals(user_alert_emails['username'], USERNAME)
+    def test_login_ok_202(self):
+        with requests_mock.mock() as m:
+            m.post(iland.ACCESS_URL,
+                   text=json.dumps(VALID_TOKEN_PAYLOAD),
+                   status_code=202)
+            self.api.login()
+            self.assertEqual(VALID_TOKEN_PAYLOAD, self.api.get_access_token())
 
-        old_user_alert_emails = user_alert_emails
-        user_alert_emails = {'emails': ['test@iland.com', 'test2@iland.com'],
-                             'username': USERNAME}
-        self._api.post('/user/' + USERNAME + '/alert-emails',
-                       user_alert_emails)
+    def test_login_ko_500(self):
+        with requests_mock.mock() as m:
+            m.post(iland.ACCESS_URL,
+                   text=json.dumps({'error': 'an error occured'}),
+                   status_code=500)
+            with self.assertRaises(iland.UnauthorizedException):
+                self.api.login()
 
-        self.assertTrue(len(user_alert_emails['emails']) >= 1)
-        self.assertEquals(user_alert_emails['username'], USERNAME)
+    def test_login_ko_400(self):
+        with requests_mock.mock() as m:
+            m.post(iland.ACCESS_URL,
+                   text=json.dumps({'error': 'an error occured'}),
+                   status_code=400)
+            with self.assertRaises(iland.UnauthorizedException):
+                self.api.login()
 
-        self._api.post('/user/' + USERNAME + '/alert-emails',
-                       old_user_alert_emails)
-        self.assertEquals(len(user_alert_emails['emails']), 2)
-        self.assertEquals(user_alert_emails['username'], USERNAME)
+    def test_refresh_token_ok(self):
+        with requests_mock.mock() as m:
+            m.post(iland.ACCESS_URL,
+                   text=json.dumps(VALID_TOKEN_PAYLOAD),
+                   status_code=200)
+            m.post(iland.REFRESH_URL,
+                   text=json.dumps(VALID_REFRESH_TOKEN_PAYLOAD),
+                   status_code=200)
+            self.api.login()
+            self.assertEqual(VALID_TOKEN_PAYLOAD, self.api.get_access_token())
 
-    def test_put_delete(self):
-        vdc_uuid = VDC_UUID
-        vdc_md = self._api.get('/vdc/' + vdc_uuid + '/metadata')
+            # manually refresh token
+            self.api.refresh_access_token()
+            # still the same since not expired therefore not renewed
+            self.assertEqual(VALID_TOKEN_PAYLOAD, self.api.get_access_token())
 
-        self.assertEquals(len(vdc_md), 1)
+            # let's wait for expiration
+            time.sleep(5)
+            self.api.refresh_access_token()
+            self.assertEqual(VALID_REFRESH_TOKEN_PAYLOAD,
+                             self.api.get_access_token())
 
-        new_md = [{'type': 'string',
-                   'value': 'B',
-                   'access': 'READ_WRITE',
-                   'key': 'AAA'}]
-        new_md.extend(vdc_md)
-        task = self._api.put('/vdc/' + vdc_uuid + '/metadata',
-                             form_data=new_md)
-        if task is None:
-            tasks = self._api.get(
-                '/task/res01.ilandcloud.com/entity/' + VDC_UUID + '/active')
-            if len(tasks) > 0:
-                task = tasks[0]
-        while task is not None:
-            task = self._api.get('/task/res01.ilandcloud.com/' + task[
-                'task_id'])
-            if task is not None and task['sychronized'] is True:
-                break
+            # manually remove the actual token so that we refetch an access
+            # token
+            self.api._token = None
+            self.api.refresh_access_token()
+            self.assertEqual(VALID_TOKEN_PAYLOAD,
+                             self.api.get_access_token())
 
-        time.sleep(10)
+    def test_refresh_token_ko_400(self):
+        with requests_mock.mock() as m:
+            m.post(iland.ACCESS_URL,
+                   text=json.dumps(VALID_TOKEN_PAYLOAD),
+                   status_code=200)
+            m.post(iland.REFRESH_URL,
+                   text=json.dumps(VALID_REFRESH_TOKEN_PAYLOAD),
+                   status_code=400)
+            self.api.login()
+            self.assertEqual(VALID_TOKEN_PAYLOAD, self.api.get_access_token())
+            # let's wait for expiration
+            time.sleep(5)
+            with self.assertRaises(iland.UnauthorizedException):
+                self.api.refresh_access_token()
 
-        updated_md = self._api.get('/vdc/' + vdc_uuid + '/metadata')
-        self.assertEquals(len(updated_md), 2)
+    def test_refresh_token_ko_500(self):
+        with requests_mock.mock() as m:
+            m.post(iland.ACCESS_URL,
+                   text=json.dumps(VALID_TOKEN_PAYLOAD),
+                   status_code=200)
+            m.post(iland.REFRESH_URL,
+                   text=json.dumps(VALID_REFRESH_TOKEN_PAYLOAD),
+                   status_code=500)
+            self.api.login()
+            self.assertEqual(VALID_TOKEN_PAYLOAD, self.api.get_access_token())
+            # let's wait for expiration
+            time.sleep(5)
+            with self.assertRaises(iland.UnauthorizedException):
+                self.api.refresh_access_token()
 
-        task = self._api.delete('/vdc/' + vdc_uuid + '/metadata/' + 'AAA')
-        if task is None:
-            tasks = self._api.get(
-                '/task/res01.ilandcloud.com/entity/' + VDC_UUID + '/active')
-            if len(tasks) > 0:
-                task = tasks[0]
-        while task is not None:
-            task = self._api.get(
-                '/task/res01.ilandcloud.com/' + task['task_id'])
-            if task is not None and task['sychronized'] is True:
-                break
+    def test_get_ok_200(self):
+        with requests_mock.mock() as m:
+            m.post(iland.ACCESS_URL,
+                   text=json.dumps(VALID_TOKEN_PAYLOAD),
+                   status_code=200)
+            rpath = '/user/jchirac'
+            user_data = {'username': 'jchirac'}
+            m.get(BASE_URL + rpath, text='XXXXX' + json.dumps(user_data),
+                  status_code=200)
+            req = self.api.get(rpath)
+            self.assertEquals(user_data, req)
 
-        time.sleep(10)
+    def test_get_ok_201(self):
+        with requests_mock.mock() as m:
+            m.post(iland.ACCESS_URL,
+                   text=json.dumps(VALID_TOKEN_PAYLOAD),
+                   status_code=200)
+            rpath = '/user/jchirac'
+            user_data = {'username': 'jchirac'}
+            m.get(BASE_URL + rpath, text='XXXXX' + json.dumps(user_data),
+                  status_code=201)
+            req = self.api.get(rpath)
+            self.assertEquals(user_data, req)
 
-        updated_md = self._api.get('/vdc/' + vdc_uuid + '/metadata')
-        self.assertEquals(len(updated_md), 1)
+    def test_get_ok_202(self):
+        with requests_mock.mock() as m:
+            m.post(iland.ACCESS_URL,
+                   text=json.dumps(VALID_TOKEN_PAYLOAD),
+                   status_code=200)
+            rpath = '/user/jchirac'
+            user_data = {'username': 'jchirac'}
+            m.get(BASE_URL + rpath, text='XXXXX' + json.dumps(user_data),
+                  status_code=202)
+            req = self.api.get(rpath)
+            self.assertEquals(user_data, req)
 
-    def test_refresh_token(self):
-        self._api.login()
-        self.assertIsNotNone(self._api.get_access_token())
-        expires_in = self._api._token_expiration_time
+    def test_get_ok_204(self):
+        with requests_mock.mock() as m:
+            m.post(iland.ACCESS_URL,
+                   text=json.dumps(VALID_TOKEN_PAYLOAD),
+                   status_code=200)
+            rpath = '/user/jchirac'
+            user_data = {'username': 'jchirac'}
+            m.get(BASE_URL + rpath, text='XXXXX' + json.dumps(user_data),
+                  status_code=204)
+            req = self.api.get(rpath)
+            self.assertEquals(user_data, req)
 
-        # force expires for tests.
-        self._api._token_expiration_time = 0
-        self._api.refresh_access_token()
+    def test_get_ko_400(self):
+        with requests_mock.mock() as m:
+            m.post(iland.ACCESS_URL,
+                   text=json.dumps(VALID_TOKEN_PAYLOAD),
+                   status_code=200)
+            rpath = '/user/jchirac'
+            user_data = {'username': 'jchirac'}
+            m.get(BASE_URL + rpath, text='XXXXX' + json.dumps(user_data),
+                  status_code=400)
+            with self.assertRaises(iland.ApiException):
+                self.api.get(rpath)
 
-        new_expires_in = self._api._token_expiration_time
-        self.assertTrue(new_expires_in > expires_in)
+    def test_get_ko_500(self):
+        with requests_mock.mock() as m:
+            m.post(iland.ACCESS_URL,
+                   text=json.dumps(VALID_TOKEN_PAYLOAD),
+                   status_code=200)
+            rpath = '/user/jchirac'
+            user_data = {'username': 'jchirac'}
+            m.get(BASE_URL + rpath, text='XXXXX' + json.dumps(user_data),
+                  status_code=500)
+            with self.assertRaises(iland.ApiException):
+                self.api.get(rpath)
 
-    def test_unauthorized_errors(self):
-        wrongCredsApi = iland.Api(client_id=CLIENT_ID,
-                                  client_secret=CLIENT_SECRET,
-                                  username='XXXX',
-                                  password='XXXX',
-                                  base_url=iland.constant.BASE_URL)
-        with self.assertRaises(UnauthorizedException):
-            wrongCredsApi.login()
+    def test_post_ok(self):
+        with requests_mock.mock() as m:
+            m.post(iland.ACCESS_URL,
+                   text=json.dumps(VALID_TOKEN_PAYLOAD),
+                   status_code=200)
+            rpath = '/user/jchirac'
+            user_data = {'username': 'jchirac'}
+            m.post(BASE_URL + rpath, text='XXXXX' + json.dumps(user_data),
+                   status_code=200)
+            req = self.api.post(rpath, form_data={'a': 'b'})
+            self.assertEquals(user_data, req)
 
-        with self.assertRaises(UnauthorizedException):
-            wrongCredsApi.get_access_token()
+    def test_post_ok_no_formdata(self):
+        with requests_mock.mock() as m:
+            m.post(iland.ACCESS_URL,
+                   text=json.dumps(VALID_TOKEN_PAYLOAD),
+                   status_code=200)
+            rpath = '/user/jchirac'
+            user_data = {'username': 'jchirac'}
+            m.post(BASE_URL + rpath, text='XXXXX' + json.dumps(user_data),
+                   status_code=200)
+            req = self.api.post(rpath)
+            self.assertEquals(user_data, req)
 
-        with self.assertRaises(UnauthorizedException):
-            wrongCredsApi.refresh_access_token()
+    def test_put_ok(self):
+        with requests_mock.mock() as m:
+            m.post(iland.ACCESS_URL,
+                   text=json.dumps(VALID_TOKEN_PAYLOAD),
+                   status_code=200)
+            rpath = '/user/jchirac'
+            user_data = {'username': 'jchirac'}
+            m.put(BASE_URL + rpath, text='XXXXX' + json.dumps(user_data),
+                  status_code=200)
+            req = self.api.put(rpath, form_data={'a': 'b'})
+            self.assertEquals(user_data, req)
 
-    def test_api_errors(self):
+    def test_put_ok_no_formdata(self):
+        with requests_mock.mock() as m:
+            m.post(iland.ACCESS_URL,
+                   text=json.dumps(VALID_TOKEN_PAYLOAD),
+                   status_code=200)
+            rpath = '/user/jchirac'
+            user_data = {'username': 'jchirac'}
+            m.put(BASE_URL + rpath, text='XXXXX' + json.dumps(user_data),
+                  status_code=200)
+            req = self.api.put(rpath)
+            self.assertEquals(user_data, req)
 
-        with self.assertRaises(ApiException):
-            self._api.get('/doesnotexist')
+    def test_delete_ok(self):
+        with requests_mock.mock() as m:
+            m.post(iland.ACCESS_URL,
+                   text=json.dumps(VALID_TOKEN_PAYLOAD),
+                   status_code=200)
+            rpath = '/user/jchirac'
+            user_data = {'username': 'jchirac'}
+            m.delete(BASE_URL + rpath, text='XXXXX' + json.dumps(user_data),
+                     status_code=200)
+            req = self.api.delete(rpath)
+            self.assertEquals(user_data, req)
+
+    def test_unknown_verb_internal(self):
+        with requests_mock.mock() as m:
+            m.post(iland.ACCESS_URL,
+                   text=json.dumps(VALID_TOKEN_PAYLOAD),
+                   status_code=200)
+            rpath = '/user/jchirac'
+            user_data = {'username': 'jchirac'}
+            m.delete(BASE_URL + rpath, text='XXXXX' + json.dumps(user_data),
+                     status_code=200)
+            with self.assertRaises(iland.ApiException):
+                self.api._do_request(rpath, verb='ACK')
+
+    def test_with_default_base_url(self):
+        self.api = iland.Api(client_id='fake',
+                             client_secret='fake',
+                             username='fake',
+                             password='fake')
+        with requests_mock.mock() as m:
+            m.post(iland.ACCESS_URL,
+                   text=json.dumps(VALID_TOKEN_PAYLOAD),
+                   status_code=200)
+            rpath = '/user/jchirac'
+            user_data = {'username': 'jchirac'}
+            m.get(iland.BASE_URL + rpath, text='XXXXX' + json.dumps(user_data),
+                  status_code=200)
+            req = self.api.get(rpath)
+            self.assertEquals(user_data, req)

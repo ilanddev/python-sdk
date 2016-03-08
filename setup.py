@@ -23,7 +23,8 @@ test_requirements = ['bumpversion==0.5.3',
                      'flake8==2.5.4',
                      'tox==2.3.1',
                      'coverage==4.0.3',
-                     'Sphinx==1.3.6'],
+                     'Sphinx==1.3.6',
+                     'requests_mock==0.7.0'],
 
 setup(
     name='iland-sdk',

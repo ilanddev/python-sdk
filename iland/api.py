@@ -42,6 +42,8 @@ class Api(object):
         self._password = password
         if base_url is not None:
             self._base_url = base_url
+        else:
+            self._base_url = BASE_URL
 
     def _get_access_token(self):
 
@@ -102,7 +104,7 @@ class Api(object):
         data = None
         if form_data is not None:
             data = json.dumps(form_data, ensure_ascii=False).encode("UTF8")
-        url = BASE_URL + rpath
+        url = self._base_url + rpath
 
         LOG.info("Request %s rpath %s" % (verb, url))
 
@@ -152,7 +154,7 @@ class Api(object):
         :raises: UnauthorizedException: credentials / grants invalids
         :return: a JSON Object or a list of JSON Objects.
         """
-        self._do_request(rpath, verb='PUT', form_data=form_data)
+        return self._do_request(rpath, verb='PUT', form_data=form_data)
 
     def post(self, rpath, form_data=None):
         """ Perform a POST request agains the iland cloud API given its resource
@@ -166,7 +168,7 @@ class Api(object):
         :raises: UnauthorizedException: credentials / grants invalids
         :return: a JSON Object or a list of JSON Objects.
         """
-        self._do_request(rpath, verb='POST', form_data=form_data)
+        return self._do_request(rpath, verb='POST', form_data=form_data)
 
     def delete(self, rpath):
         """ Perform a DELETE request agains the iland cloud API given its
@@ -179,7 +181,7 @@ class Api(object):
         :raises: UnauthorizedException: credentials / grants invalids
         :return: a JSON Object or a list of JSON Objects.
         """
-        self._do_request(rpath, verb='DELETE')
+        return self._do_request(rpath, verb='DELETE')
 
     def get_access_token(self):
         """ Returns the access token in use for this session.
