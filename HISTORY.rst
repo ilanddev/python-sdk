@@ -2,8 +2,8 @@
 History
 =======
 
-0.4.0 (unreleased)
-------------------
+0.4.0 (2016-3-08)
+-----------------
 
 * support 204 no content HTTP return code
 * fix naming of _validate_token method
