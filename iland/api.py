@@ -25,8 +25,10 @@ class Api(object):
     _token = None
     _token_expiration_time = None
 
+    _verify_ssl = True
+
     def __init__(self, client_id, client_secret, username, password,
-                 base_url=None):
+                 base_url=None, verify_ssl=True):
         """Instantiate a new iland.Api object.
 
         :param client_id: the client identifier
@@ -34,6 +36,7 @@ class Api(object):
         :param username: the iland cloud username
         :param password: the iland cloud password
         :param base_url: [optional] base url to contact the iland cloud API
+        :param verify_ssl: [optional] whether or not to verify endpoints SSL
         :return: Api Object
         """
         self._client_id = client_id
@@ -44,6 +47,7 @@ class Api(object):
             self._base_url = base_url
         else:
             self._base_url = BASE_URL
+        self._verify_ssl = verify_ssl
 
     def _get_access_token(self):
 
@@ -57,7 +61,7 @@ class Api(object):
                   'username': self._username,
                   'password': self._password,
                   'grant_type': 'password'}
-        r = requests.post(ACCESS_URL, data=params)
+        r = requests.post(ACCESS_URL, data=params, verify=self._verify_ssl)
         json_payload = json.loads(r.content.decode('ascii'))
         if r.status_code not in [200, 201, 202]:
             raise UnauthorizedException(json_payload)
@@ -80,7 +84,8 @@ class Api(object):
                           'grant_type': 'refresh_token',
                           'refresh_token': self._token['refresh_token']
                           }
-                r = requests.post(REFRESH_URL, data=params)
+                r = requests.post(REFRESH_URL, data=params,
+                                  verify=self._verify_ssl)
                 json_payload = json.loads(r.content.decode('ascii'))
                 if r.status_code not in [200, 201, 202]:
                     raise UnauthorizedException(json_payload)
@@ -112,13 +117,15 @@ class Api(object):
             'Authorization': 'Bearer %s' % self._get_access_token_string(),
             'content-type': 'application/json'}
         if verb == 'GET':
-            r = requests.get(url, headers=headers)
+            r = requests.get(url, headers=headers, verify=self._verify_ssl)
         elif verb == 'PUT':
-            r = requests.put(url, data=data, headers=headers)
+            r = requests.put(url, data=data, headers=headers,
+                             verify=self._verify_ssl)
         elif verb == 'POST':
-            r = requests.post(url, data=data, headers=headers)
+            r = requests.post(url, data=data, headers=headers,
+                              verify=self._verify_ssl)
         elif verb == 'DELETE':
-            r = requests.delete(url, headers=headers)
+            r = requests.delete(url, headers=headers, verify=self._verify_ssl)
         else:
             raise ApiException({'message': 'Unsupported HTTP verb %s' % verb})
 

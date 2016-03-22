@@ -2,10 +2,11 @@
 History
 =======
 
-0.5.0 (unreleased)
+0.5.0 (2016-3-22)
 ------------------
 
 * promote to beta status
+* extra `verify_ssl` `Api` constructor to allow one to not verify endpoints SSL
 
 0.4.0 (2016-3-08)
 -----------------
