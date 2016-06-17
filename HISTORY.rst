@@ -5,7 +5,7 @@ History
 0.6.0 (unreleased)
 ------------------
 
-*
+* default resource path update
 
 0.5.0 (2016-3-22)
 -----------------
