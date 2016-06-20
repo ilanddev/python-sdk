@@ -10,7 +10,7 @@ import requests_mock
 
 import iland
 
-eBASE_URL = 'http://mock.com/ecs'
+BASE_URL = 'http://mock.com/ecs'
 
 VALID_TOKEN_PAYLOAD = {'expires_in': 12,
                        'access_token': 'AZERTYUIOP',
