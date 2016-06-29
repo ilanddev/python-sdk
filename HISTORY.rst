@@ -6,6 +6,7 @@ History
 ------------------
 
 * update flake8 dependencies
+* promote to stable
 
 0.6.0 (2016-6-28)
 -----------------
