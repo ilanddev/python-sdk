@@ -2,8 +2,13 @@
 History
 =======
 
-0.6.0 (unreleased)
+0.7.0 (unreleased)
 ------------------
+
+*
+
+0.6.0 (2016-6-28)
+-----------------
 
 * update dependencies
 * default resource path update

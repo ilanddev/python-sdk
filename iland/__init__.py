@@ -11,4 +11,4 @@ from .exception import UnauthorizedException  # noqa
 
 __author__ = 'iland Internet Solutions, Corp'
 __email__ = 'devops@iland.com'
-__version__ = '0.6.0'
+__version__ = '0.7.0'
