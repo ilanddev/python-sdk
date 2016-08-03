@@ -5,7 +5,7 @@ History
 0.7.0 (unreleased)
 ------------------
 
-* update flake8 dependencies
+* update dev dependencies
 * promote to stable
 
 0.6.0 (2016-6-28)

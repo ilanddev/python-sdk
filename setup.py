@@ -20,10 +20,10 @@ requirements = ['requests==2.10.0'],
 test_requirements = ['bumpversion==0.5.3',
                      'wheel>=0.29.0',
                      'watchdog==0.8.3',
-                     'flake8==2.6.2',
+                     'flake8==3.0.3',
                      'tox==2.3.1',
-                     'coverage==4.1',
-                     'Sphinx==1.4.4',
+                     'coverage==4.2',
+                     'Sphinx==1.4.5',
                      'requests_mock==1.0.0'],
 
 setup(
