@@ -15,16 +15,16 @@ with open('README.rst') as readme_file:
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
-requirements = ['requests==2.10.0'],
+requirements = ['requests==2.11.1'],
 
 test_requirements = ['bumpversion==0.5.3',
                      'wheel>=0.29.0',
                      'watchdog==0.8.3',
-                     'flake8==3.0.3',
+                     'flake8==3.0.4',
                      'tox==2.3.1',
                      'coverage==4.2',
-                     'Sphinx==1.4.5',
-                     'requests_mock==1.0.0'],
+                     'Sphinx==1.4.8',
+                     'requests_mock==1.1.0'],
 
 setup(
     name='iland-sdk',
