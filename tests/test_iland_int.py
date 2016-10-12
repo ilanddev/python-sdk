@@ -73,47 +73,27 @@ class TestIlandInt(unittest.TestCase):
         vdc_uuid = VDC_UUID
         vdc_md = self._api.get('/vdc/' + vdc_uuid + '/metadata')
 
-        self.assertEquals(len(vdc_md), 1)
+        self.assertEquals(len(vdc_md), 0)
 
         new_md = [{'type': 'string',
                    'value': 'B',
                    'access': 'READ_WRITE',
                    'key': 'AAA'}]
         new_md.extend(vdc_md)
-        task = self._api.put('/vdc/' + vdc_uuid + '/metadata',
-                             form_data=new_md)
-        if task is None:
-            tasks = self._api.get(
-                '/task/res01.ilandcloud.com/entity/' + VDC_UUID + '/active')
-            if len(tasks) > 0:
-                task = tasks[0]
-        while task is not None:
-            task = self._api.get('/task/res01.ilandcloud.com/' + task[
-                'task_id'])
-            if task is not None and task['sychronized'] is True:
-                break
-
-        time.sleep(10)
-
-        updated_md = self._api.get('/vdc/' + vdc_uuid + '/metadata')
-        self.assertEquals(len(updated_md), 2)
-
-        task = self._api.delete('/vdc/' + vdc_uuid + '/metadata/' + 'AAA')
-        if task is None:
-            tasks = self._api.get(
-                '/task/res01.ilandcloud.com/entity/' + VDC_UUID + '/active')
-            if len(tasks) > 0:
-                task = tasks[0]
-        while task is not None:
-            task = self._api.get(
-                '/task/res01.ilandcloud.com/' + task['task_id'])
-            if task is not None and task['sychronized'] is True:
-                break
+        self._api.put('/vdc/' + vdc_uuid + '/metadata',
+                      form_data=new_md)
 
         time.sleep(10)
 
         updated_md = self._api.get('/vdc/' + vdc_uuid + '/metadata')
         self.assertEquals(len(updated_md), 1)
+
+        self._api.delete('/vdc/' + vdc_uuid + '/metadata/' + 'AAA')
+
+        time.sleep(10)
+
+        updated_md = self._api.get('/vdc/' + vdc_uuid + '/metadata')
+        self.assertEquals(len(updated_md), 0)
 
     def test_refresh_token(self):
         self._api.login()
@@ -143,6 +123,5 @@ class TestIlandInt(unittest.TestCase):
             wrongCredsApi.refresh_access_token()
 
     def test_api_errors(self):
-
         with self.assertRaises(ApiException):
             self._api.get('/doesnotexist')
