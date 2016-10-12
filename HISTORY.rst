@@ -5,6 +5,7 @@ History
 0.7.0 (unreleased)
 ------------------
 
+* update token exchange endpoint
 * update requests lib
 * update dev dependencies
 * promote to stable

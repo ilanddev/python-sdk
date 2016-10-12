@@ -7,8 +7,8 @@ BASE_URL = 'https://api.ilandcloud.com/ecs'
 
 #: Access token URL.
 ACCESS_URL = \
-    'https://ecs.ilandcloud.com/auth/realms/iland-core/tokens/grants/access'
+    'https://ecs.ilandcloud.com/auth/realms/iland-core/' \
+    + 'protocol/openid-connect/token'
 
-#: Refresh token URL.
-REFRESH_URL = \
-    'https://ecs.ilandcloud.com/auth/realms/iland-core/tokens/refresh'
+#: Refresh token URL. (query param is for mock testing reasons
+REFRESH_URL = ACCESS_URL + '?refresh=1'
