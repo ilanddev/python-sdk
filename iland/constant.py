@@ -10,5 +10,5 @@ ACCESS_URL = \
     'https://ecs.ilandcloud.com/auth/realms/iland-core/' \
     + 'protocol/openid-connect/token'
 
-#: Refresh token URL. (query param is for mock testing reasons
+#: Refresh token URL. (`refresh` query param is here only for mock testing reason)
 REFRESH_URL = ACCESS_URL + '?refresh=1'
