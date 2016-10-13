@@ -110,7 +110,7 @@ class TestIlandInt(unittest.TestCase):
     def test_unauthorized_errors(self):
         wrongCredsApi = iland.Api(client_id=CLIENT_ID,
                                   client_secret=CLIENT_SECRET,
-                                  username='XXXX',
+                                  username='PYTHON_SDK_TEST',
                                   password='XXXX',
                                   base_url=iland.constant.BASE_URL)
         with self.assertRaises(UnauthorizedException):
