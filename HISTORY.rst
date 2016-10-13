@@ -2,7 +2,7 @@
 History
 =======
 
-0.7.0 (unreleased)
+0.7.0 (2016-10-13)
 ------------------
 
 * update token exchange endpoint
