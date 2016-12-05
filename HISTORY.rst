@@ -6,6 +6,7 @@ History
 ------------------
 
 * update outdated dependencies
+* drop Python 3.3 support "just like everybody"
 
 0.7.0 (2016-10-13)
 ------------------
