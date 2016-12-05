@@ -5,7 +5,7 @@ History
 0.7.1 (unreleased)
 ------------------
 
-*
+* update outdated dependencies
 
 0.7.0 (2016-10-13)
 ------------------
