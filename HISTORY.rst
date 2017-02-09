@@ -2,16 +2,17 @@
 History
 =======
 
-0.7.1 (unreleased)
+0.7.1 (2017-02-08)
 ------------------
 
 * update outdated dependencies
 * drop Python 3.3 support "just like everybody"
+* update token exchange endpoint. We keeping BBB for old client implementations
 
 0.7.0 (2016-10-13)
 ------------------
 
-* update token exchange endpoint
+* update token exchange endpoint. We keeping BBB for old client implementations
 * update requests lib
 * update dev dependencies
 * promote to stable
