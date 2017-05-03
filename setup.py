@@ -21,9 +21,9 @@ test_requirements = ['bumpversion==0.5.3',
                      'wheel>=0.29.0',
                      'watchdog==0.8.3',
                      'flake8==3.3.0',
-                     'tox==2.6.0',
+                     'tox==2.7.0',
                      'coverage==4.3.4',
-                     'Sphinx==1.5.2',
+                     'Sphinx==1.5.5',
                      'requests_mock==1.3.0'],
 
 setup(
