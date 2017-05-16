@@ -2,6 +2,13 @@
 History
 =======
 
+0.7.2 (2017-05-16)
+------------------
+
+* optional `access_url_token` `Api` constructor param allowing one to override
+  token exchange URL.
+* update dependencies.
+
 0.7.1 (2017-02-08)
 ------------------
 

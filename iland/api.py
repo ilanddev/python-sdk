@@ -21,6 +21,7 @@ class Api(object):
     _username = None
     _password = None
     _base_url = BASE_URL
+    _access_token_url = ACCESS_URL
 
     _token = None
     _token_expiration_time = None
@@ -28,7 +29,7 @@ class Api(object):
     _verify_ssl = True
 
     def __init__(self, client_id, client_secret, username, password,
-                 base_url=None, verify_ssl=True):
+                 base_url=None, access_token_url=None, verify_ssl=True):
         """Instantiate a new iland.Api object.
 
         :param client_id: the client identifier
@@ -36,6 +37,8 @@ class Api(object):
         :param username: the iland cloud username
         :param password: the iland cloud password
         :param base_url: [optional] base url to contact the iland cloud API
+        :param access_token_url: [optional] access token url to contact the \
+        iland cloud API
         :param verify_ssl: [optional] whether or not to verify endpoints SSL
         :return: Api Object
         """
@@ -47,6 +50,10 @@ class Api(object):
             self._base_url = base_url
         else:
             self._base_url = BASE_URL
+        if access_token_url is not None:
+            self._access_token_url = access_token_url
+        else:
+            self._access_token_url = ACCESS_URL
         self._verify_ssl = verify_ssl
 
     def _get_access_token(self):
@@ -54,14 +61,15 @@ class Api(object):
         if self._valid_token():
             return self._token
 
-        LOG.info("SSO Request %s" % ACCESS_URL)
+        LOG.info("SSO Request %s" % self._access_token_url)
 
         params = {'client_id': self._client_id,
                   'client_secret': self._client_secret,
                   'username': self._username,
                   'password': self._password,
                   'grant_type': 'password'}
-        r = requests.post(ACCESS_URL, data=params, verify=self._verify_ssl)
+        r = requests.post(
+            self._access_token_url, data=params, verify=self._verify_ssl)
         json_payload = json.loads(r.content.decode('ascii'))
         if r.status_code not in [200, 201, 202]:
             raise UnauthorizedException(json_payload)
