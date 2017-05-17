@@ -15,7 +15,7 @@ with open('README.rst') as readme_file:
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
-requirements = ['requests==2.14.2'],
+requirements = ['requests>=2.2.1'],
 
 test_requirements = ['bumpversion==0.5.3',
                      'wheel>=0.29.0',
@@ -28,7 +28,7 @@ test_requirements = ['bumpversion==0.5.3',
 
 setup(
     name='iland-sdk',
-    version='0.7.2',
+    version='0.7.3',
     description="iland cloud Python SDK",
     long_description=readme + '\n\n' + history,
     author="iland Internet Solutions, Corp",
