@@ -15,7 +15,7 @@ with open('README.rst') as readme_file:
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
-requirements = ['requests==2.14.2'],
+requirements = ['requests>=2.2.1'],
 
 test_requirements = ['bumpversion==0.5.3',
                      'wheel>=0.29.0',

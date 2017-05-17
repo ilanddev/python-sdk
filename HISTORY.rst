@@ -8,6 +8,7 @@ History
 * optional `access_url_token` `Api` constructor param allowing one to override
   token exchange URL.
 * update dependencies.
+* lower required version of `requests` module from `==2.14.2` to `>=2.2.1`.
 
 0.7.1 (2017-02-08)
 ------------------
