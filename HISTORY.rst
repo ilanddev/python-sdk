@@ -5,7 +5,8 @@ History
 0.7.3 (unreleased)
 ------------------
 
-*
+*  Fix internal use of `REFRESH_URL` when overriding `access_token_url` at \
+constructor time.
 
 0.7.2 (2017-05-16)
 ------------------

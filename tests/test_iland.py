@@ -11,6 +11,7 @@ import requests_mock
 import iland
 
 BASE_URL = 'http://mock.com/ecs'
+ACCESS_URL = iland.ACCESS_URL
 
 VALID_TOKEN_PAYLOAD = {'expires_in': 12,
                        'access_token': 'AZERTYUIOP',
@@ -30,7 +31,8 @@ class TestIland(unittest.TestCase):
                              client_secret='fake',
                              username='fake',
                              password='fake',
-                             base_url=BASE_URL)
+                             base_url=BASE_URL,
+                             access_token_url=ACCESS_URL)
 
     def test_login_ok_200(self):
         with requests_mock.mock() as m:

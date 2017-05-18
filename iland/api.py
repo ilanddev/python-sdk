@@ -22,6 +22,7 @@ class Api(object):
     _password = None
     _base_url = BASE_URL
     _access_token_url = ACCESS_URL
+    _refresh_token_url = REFRESH_URL
 
     _token = None
     _token_expiration_time = None
@@ -52,8 +53,12 @@ class Api(object):
             self._base_url = BASE_URL
         if access_token_url is not None:
             self._access_token_url = access_token_url
+            #: Refresh token URL. (`refresh` query param is here only for mock
+            # testing reason)
+            self._refresh_token_url = access_token_url + '?refresh=1'
         else:
             self._access_token_url = ACCESS_URL
+            self._refresh_token_url = REFRESH_URL
         self._verify_ssl = verify_ssl
 
     def _get_access_token(self):
@@ -86,13 +91,13 @@ class Api(object):
     def _refresh_token(self):
         if not self._valid_token():
             if self._token is not None:
-                LOG.info("SSO Request %s" % REFRESH_URL)
+                LOG.info("SSO Request %s" % self._refresh_token_url)
                 params = {'client_id': self._client_id,
                           'client_secret': self._client_secret,
                           'grant_type': 'refresh_token',
                           'refresh_token': self._token['refresh_token']
                           }
-                r = requests.post(REFRESH_URL, data=params,
+                r = requests.post(self._refresh_token_url, data=params,
                                   verify=self._verify_ssl)
                 json_payload = json.loads(r.content.decode('ascii'))
                 if r.status_code not in [200, 201, 202]:
