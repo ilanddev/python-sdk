@@ -56,9 +56,6 @@ class Api(object):
             #: Refresh token URL. (`refresh` query param is here only for mock
             # testing reason)
             self._refresh_token_url = access_token_url + '?refresh=1'
-        else:
-            self._access_token_url = ACCESS_URL
-            self._refresh_token_url = REFRESH_URL
         self._verify_ssl = verify_ssl
 
     def _get_access_token(self):
