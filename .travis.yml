@@ -28,5 +28,8 @@ matrix:
 # command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
 install: pip install -U tox
 
+# copy the apicreds.py.example template to apicreds.py
+before_script: cp tests/apicreds.py.example tests/apicreds.py
+
 # command to run tests, e.g. python setup.py test
 script: tox -e $TOX_ENV
