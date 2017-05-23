@@ -28,6 +28,7 @@ class Api(object):
     _token_expiration_time = None
 
     _verify_ssl = True
+    _session = None
 
     def __init__(self, client_id, client_secret, username, password,
                  base_url=None, access_token_url=None, verify_ssl=True):
@@ -57,6 +58,7 @@ class Api(object):
             # testing reason)
             self._refresh_token_url = access_token_url + '?refresh=1'
         self._verify_ssl = verify_ssl
+        self._session = requests.Session()
 
     def _get_access_token(self):
 
@@ -70,7 +72,7 @@ class Api(object):
                   'username': self._username,
                   'password': self._password,
                   'grant_type': 'password'}
-        r = requests.post(
+        r = self._session.post(
             self._access_token_url, data=params, verify=self._verify_ssl)
         json_payload = json.loads(r.content.decode('ascii'))
         if r.status_code not in [200, 201, 202]:
@@ -94,8 +96,8 @@ class Api(object):
                           'grant_type': 'refresh_token',
                           'refresh_token': self._token['refresh_token']
                           }
-                r = requests.post(self._refresh_token_url, data=params,
-                                  verify=self._verify_ssl)
+                r = self._session.post(self._refresh_token_url, data=params,
+                                       verify=self._verify_ssl)
                 json_payload = json.loads(r.content.decode('ascii'))
                 if r.status_code not in [200, 201, 202]:
                     raise UnauthorizedException(json_payload)
@@ -127,15 +129,17 @@ class Api(object):
             'Authorization': 'Bearer %s' % self._get_access_token_string(),
             'content-type': 'application/json'}
         if verb == 'GET':
-            r = requests.get(url, headers=headers, verify=self._verify_ssl)
+            r = self._session.get(url, headers=headers,
+                                  verify=self._verify_ssl)
         elif verb == 'PUT':
-            r = requests.put(url, data=data, headers=headers,
-                             verify=self._verify_ssl)
+            r = self._session.put(url, data=data, headers=headers,
+                                  verify=self._verify_ssl)
         elif verb == 'POST':
-            r = requests.post(url, data=data, headers=headers,
-                              verify=self._verify_ssl)
+            r = self._session.post(url, data=data, headers=headers,
+                                   verify=self._verify_ssl)
         elif verb == 'DELETE':
-            r = requests.delete(url, headers=headers, verify=self._verify_ssl)
+            r = self._session.delete(url, headers=headers,
+                                     verify=self._verify_ssl)
         else:
             raise ApiException({'message': 'Unsupported HTTP verb %s' % verb})
 
