@@ -5,7 +5,7 @@ History
 0.7.4 (unreleased)
 ------------------
 
-*
+* Use a `requests.Session` object for all api calls
 
 0.7.3 (2017-05-18)
 ------------------
