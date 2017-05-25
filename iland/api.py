@@ -23,6 +23,7 @@ class Api(object):
     _base_url = BASE_URL
     _access_token_url = ACCESS_URL
     _refresh_token_url = REFRESH_URL
+    _proxies = None
 
     _token = None
     _token_expiration_time = None
@@ -128,18 +129,26 @@ class Api(object):
         headers = {
             'Authorization': 'Bearer %s' % self._get_access_token_string(),
             'content-type': 'application/json'}
+
+        request_params = {
+            'headers': headers,
+            'verify':  self._verify_ssl
+        }
+
+        if verb in ('PUT', 'POST'):
+            request_params['data'] = data
+
+        if self._proxies and isinstance(self._proxies, dict):
+            request_params['proxies'] = self._proxies
+
         if verb == 'GET':
-            r = self._session.get(url, headers=headers,
-                                  verify=self._verify_ssl)
+            r = self._session.get(url, **request_params)
         elif verb == 'PUT':
-            r = self._session.put(url, data=data, headers=headers,
-                                  verify=self._verify_ssl)
+            r = self._session.put(url, **request_params)
         elif verb == 'POST':
-            r = self._session.post(url, data=data, headers=headers,
-                                   verify=self._verify_ssl)
+            r = self._session.post(url, **request_params)
         elif verb == 'DELETE':
-            r = self._session.delete(url, headers=headers,
-                                     verify=self._verify_ssl)
+            r = self._session.delete(url, **request_params)
         else:
             raise ApiException({'message': 'Unsupported HTTP verb %s' % verb})
 

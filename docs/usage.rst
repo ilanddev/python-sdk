@@ -27,3 +27,14 @@ cloud::
                              'username': USERNAME}
     >>> api.post('/user/' + USERNAME + '/alert-emails', user_alert_emails)
 
+To use a proxy you can define a ``python-requests`` style proxies_ dictionary
+and set the ``_proxies`` attribute on the api object::
+
+    >>> api = iland.Api(client_id=CLIENT_ID,
+                        client_secret=CLIENT_SECRET,
+                        username=USERNAME,
+                        password=PASSWORD)
+    >>> api._proxies = {'https': 'https://10.10.1.10:3128'}
+    >>> user = api.get('/user/' + USERNAME)
+
+.. _proxies: http://docs.python-requests.org/en/master/user/advanced/#proxies

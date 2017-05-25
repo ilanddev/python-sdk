@@ -20,18 +20,21 @@ try:
     from apicreds import (CLIENT_ID,
                           CLIENT_SECRET,
                           USERNAME,
-                          PASSWORD)
+                          PASSWORD,
+                          PROXIES)
 except ImportError:
     try:
         from .apicreds import (CLIENT_ID,
                                CLIENT_SECRET,
                                USERNAME,
-                               PASSWORD)
+                               PASSWORD,
+                               PROXIES)
     except ImportError:
         CLIENT_ID = None
         CLIENT_SECRET = None
         USERNAME = None
         PASSWORD = None
+        PROXIES = {}
 
 VDC_UUID = \
     'res01.ilandcloud.com:urn:vcloud:vdc:a066325d-6be0-4733-8d9f-7687c36f4536'
@@ -131,3 +134,10 @@ class TestIlandInt(unittest.TestCase):
     def test_api_errors(self):
         with self.assertRaises(ApiException):
             self._api.get('/doesnotexist')
+
+    @unittest.skipIf(not PROXIES, "No proxies defined")
+    def test_get_with_proxy(self):
+        self._api._proxies = PROXIES
+        user = self._api.get('/user/' + USERNAME)
+        self.assertEqual(USERNAME, user.get('name'))
+        self.assertTrue(len(user.keys()) > 5)
