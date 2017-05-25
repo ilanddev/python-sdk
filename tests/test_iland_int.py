@@ -22,10 +22,16 @@ try:
                           USERNAME,
                           PASSWORD)
 except ImportError:
-    from .apicreds import (CLIENT_ID,
-                           CLIENT_SECRET,
-                           USERNAME,
-                           PASSWORD)
+    try:
+        from .apicreds import (CLIENT_ID,
+                               CLIENT_SECRET,
+                               USERNAME,
+                               PASSWORD)
+    except ImportError:
+        CLIENT_ID = None
+        CLIENT_SECRET = None
+        USERNAME = None
+        PASSWORD = None
 
 VDC_UUID = \
     'res01.ilandcloud.com:urn:vcloud:vdc:a066325d-6be0-4733-8d9f-7687c36f4536'
