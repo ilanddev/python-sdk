@@ -13,7 +13,7 @@ from .exception import ApiException, UnauthorizedException
 
 
 class Api(object):
-    """A python interface into the iland cloud API
+    """A Python interface into the iland cloud API
     """
 
     _client_id = None
@@ -155,8 +155,8 @@ class Api(object):
         return json_obj
 
     def get(self, rpath):
-        """ Perform a GET request agains the iland cloud API given its resource
-        path.
+        """ Perform a GET request against the iland cloud API given its
+        resource path.
 
         `iland.Api` will refresh the access token if non valid.
 
@@ -168,8 +168,8 @@ class Api(object):
         return self._do_request(rpath)
 
     def put(self, rpath, form_data=None):
-        """ Perform a PUT request agains the iland cloud API given its resource
-        path.
+        """ Perform a PUT request against the iland cloud API given its
+        resource path.
 
         `iland.Api` will refresh the access token if non valid.
 
@@ -182,8 +182,8 @@ class Api(object):
         return self._do_request(rpath, verb='PUT', form_data=form_data)
 
     def post(self, rpath, form_data=None):
-        """ Perform a POST request agains the iland cloud API given its resource
-        path.
+        """ Perform a POST request against the iland cloud API given its
+        resource path.
 
         `iland.Api` will refresh the access token if non valid.
 
@@ -196,7 +196,7 @@ class Api(object):
         return self._do_request(rpath, verb='POST', form_data=form_data)
 
     def delete(self, rpath):
-        """ Perform a DELETE request agains the iland cloud API given its
+        """ Perform a DELETE request against the iland cloud API given its
         resource path.
 
         `iland.Api` will refresh the access token if non valid.
@@ -211,8 +211,8 @@ class Api(object):
     def get_access_token(self):
         """ Returns the access token in use for this session.
 
-        This method is exposed in case you interested in managing the token
-        life cycle yourself. `iland.Api` will refresh the token on your
+        This method is exposed in case you are interested in managing the
+        token life cycle yourself. `iland.Api` will refresh the token on your
         behalf while performing queries.
 
         :raises: UnauthorizedException: credentials / grants invalids
@@ -223,8 +223,8 @@ class Api(object):
     def refresh_access_token(self):
         """ Refresh token if token is not valid: None or expired.
 
-        This method is exposed in case you interested in managing the token
-        life cycle yourself. `iland.Api` will refresh the token on your
+        This method is exposed in case you are interested in managing the
+        token life cycle yourself. `iland.Api` will refresh the token on your
         behalf while performing queries.
 
         :raises: UnauthorizedException: credentials / grants invalids
@@ -235,8 +235,8 @@ class Api(object):
     def login(self):
         """ Requests an access token.
 
-        This method is exposed in case you interested in managing the token
-        life cycle yourself. `iland.Api` will refresh the token on your
+        This method is exposed in case you are interested in managing the
+        token life cycle yourself. `iland.Api` will refresh the token on your
         behalf while performing queries.
 
         :raises: UnauthorizedException: credentials / grants invalids
