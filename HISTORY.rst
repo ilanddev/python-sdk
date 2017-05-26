@@ -6,6 +6,7 @@ History
 ------------------
 
 * Use a `requests.Session` object for all api calls
+* Remove `base_url`, `access_token_url`, and `verify_ssl` from Api constructor
 
 0.7.3 (2017-05-18)
 ------------------

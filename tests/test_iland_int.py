@@ -47,8 +47,8 @@ class TestIlandInt(unittest.TestCase):
         self._api = iland.Api(client_id=CLIENT_ID,
                               client_secret=CLIENT_SECRET,
                               username=USERNAME,
-                              password=PASSWORD,
-                              base_url=iland.constant.BASE_URL)
+                              password=PASSWORD)
+        self._api._base_url = iland.constant.BASE_URL
 
     def tearDown(self):
         pass
@@ -120,8 +120,9 @@ class TestIlandInt(unittest.TestCase):
         wrongCredsApi = iland.Api(client_id=CLIENT_ID,
                                   client_secret=CLIENT_SECRET,
                                   username='PYTHON_SDK_TEST',
-                                  password='XXXX',
-                                  base_url=iland.constant.BASE_URL)
+                                  password='XXXX')
+        wrongCredsApi._base_url = iland.constant.BASE_URL
+
         with self.assertRaises(UnauthorizedException):
             wrongCredsApi.login()
 
