@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
-"""A library that provides a custome logger for the `iland.Api` object."""
+"""A library that provides a custom logger for the `iland.Api` object."""
 
 import logging
 import sys
 
-#: A customer Python logging logger for the `iland.Api` object.
+#: A custom Python logging logger for the `iland.Api` object.
 LOG = logging.getLogger('iland_sdk')
 LOG.setLevel(logging.INFO)
 

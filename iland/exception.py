@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-"""A library that provides custom excptions for the `iland.Api` module."""
+"""A library that provides custom exceptions for the `iland.Api` module."""
 
 
 class ApiException(Exception):
