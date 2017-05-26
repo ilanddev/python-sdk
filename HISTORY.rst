@@ -2,7 +2,7 @@
 History
 =======
 
-0.7.4 (unreleased)
+0.7.4 (2017-05-26)
 ------------------
 
 * Use a `requests.Session` object for all api calls
