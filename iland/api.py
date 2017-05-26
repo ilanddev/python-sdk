@@ -21,7 +21,7 @@ class Api(object):
     _username = None
     _password = None
     _base_url = BASE_URL
-    _access_token_url = ACCESS_URL
+    _access_token_url_ = ACCESS_URL
     _refresh_token_url = REFRESH_URL
     _proxies = None
 
@@ -31,35 +31,30 @@ class Api(object):
     _verify_ssl = True
     _session = None
 
-    def __init__(self, client_id, client_secret, username, password,
-                 base_url=None, access_token_url=None, verify_ssl=True):
+    def __init__(self, client_id, client_secret, username, password):
         """Instantiate a new iland.Api object.
 
         :param client_id: the client identifier
         :param client_secret: the client secret
         :param username: the iland cloud username
         :param password: the iland cloud password
-        :param base_url: [optional] base url to contact the iland cloud API
-        :param access_token_url: [optional] access token url to contact the \
-        iland cloud API
-        :param verify_ssl: [optional] whether or not to verify endpoints SSL
         :return: Api Object
         """
         self._client_id = client_id
         self._client_secret = client_secret
         self._username = username
         self._password = password
-        if base_url is not None:
-            self._base_url = base_url
-        else:
-            self._base_url = BASE_URL
-        if access_token_url is not None:
-            self._access_token_url = access_token_url
-            #: Refresh token URL. (`refresh` query param is here only for mock
-            # testing reason)
-            self._refresh_token_url = access_token_url + '?refresh=1'
-        self._verify_ssl = verify_ssl
         self._session = requests.Session()
+
+    @property
+    def _access_token_url(self):
+        return self._access_token_url_
+
+    @_access_token_url.setter
+    def _access_token_url(self, access_token_url):
+        if access_token_url is not None:
+            self._access_token_url_ = access_token_url
+            self._refresh_token_url = access_token_url + '?refresh=1'
 
     def _get_access_token(self):
 
