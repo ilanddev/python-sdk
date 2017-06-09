@@ -5,7 +5,8 @@ History
 0.7.5 (unreleased)
 ------------------
 
-* Force iland API v0.8
+* Force iland API v0.8.
+* Update dev requirements.
 
 0.7.4 (2017-05-26)
 ------------------
