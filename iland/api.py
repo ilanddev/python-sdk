@@ -123,7 +123,9 @@ class Api(object):
 
         headers = {
             'Authorization': 'Bearer %s' % self._get_access_token_string(),
-            'content-type': 'application/json'}
+            'Content-Type': 'application/vnd.ilandcloud.api.v0.8+json',
+            'Accept': 'application/vnd.ilandcloud.api.v0.8+json'
+        }
 
         request_params = {
             'headers': headers,
