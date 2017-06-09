@@ -23,7 +23,7 @@ test_requirements = ['bumpversion==0.5.3',
                      'flake8==3.3.0',
                      'tox==2.7.0',
                      'coverage==4.4.1',
-                     'Sphinx==1.6.1',
+                     'Sphinx==1.6.2',
                      'requests_mock==1.3.0'],
 
 setup(
