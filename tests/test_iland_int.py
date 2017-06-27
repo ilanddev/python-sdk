@@ -104,6 +104,18 @@ class TestIlandInt(unittest.TestCase):
         updated_md = self._api.get('/vdc/' + vdc_uuid + '/metadata')
         self.assertEquals(len(updated_md), 0)
 
+    def test_get_with_host_header(self):
+        user = self._api.get('/user/' + USERNAME,
+                             headers={'Host': 'api.ilandcloud.com'})
+        self.assertEqual(USERNAME, user.get('name'))
+        self.assertTrue(len(user.keys()) > 5)
+
+    def test_get_with_disallowed_header(self):
+        user = self._api.get('/user/' + USERNAME,
+                             headers={'Accept': 'text/csv'})
+        self.assertEqual(USERNAME, user.get('name'))
+        self.assertTrue(len(user.keys()) > 5)
+
     def test_refresh_token(self):
         self._api.login()
         self.assertIsNotNone(self._api.get_access_token())

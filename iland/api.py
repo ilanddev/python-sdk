@@ -112,7 +112,7 @@ class Api(object):
         token_string = self._get_access_token()['access_token']
         return token_string
 
-    def _do_request(self, rpath, verb='GET', form_data=None):
+    def _do_request(self, rpath, verb='GET', form_data=None, headers=None):
         self._refresh_token()
         data = None
         if form_data is not None:
@@ -121,14 +121,24 @@ class Api(object):
 
         LOG.info("Request %s rpath %s" % (verb, url))
 
-        headers = {
+        default_headers = {
             'Authorization': 'Bearer %s' % self._get_access_token_string(),
             'Content-Type': 'application/vnd.ilandcloud.api.v0.8+json',
             'Accept': 'application/vnd.ilandcloud.api.v0.8+json'
         }
 
+        merged_headers = default_headers.copy()
+
+        if headers and isinstance(headers, dict):
+            for header, value in headers.items():
+                # don't allow overriding of our default headers
+                if header in default_headers:
+                    LOG.warning("Header '%s' can't be overridden" % header)
+                else:
+                    merged_headers[header] = value
+
         request_params = {
-            'headers': headers,
+            'headers': merged_headers,
             'verify':  self._verify_ssl
         }
 
@@ -156,20 +166,22 @@ class Api(object):
             raise ApiException(json_obj)
         return json_obj
 
-    def get(self, rpath):
+    def get(self, rpath, headers=None):
         """ Perform a GET request against the iland cloud API given its
         resource path.
 
         `iland.Api` will refresh the access token if non valid.
 
         :param rpath: the resource path as a Python builtin String object
+        :param headers: an optional dictionary of http headers to send with \
+                        the request
         :raises: ApiException: API requests returns an error
         :raises: UnauthorizedException: credentials / grants invalids
         :return: a JSON Object or a list of JSON Objects.
         """
-        return self._do_request(rpath)
+        return self._do_request(rpath, headers=headers)
 
-    def put(self, rpath, form_data=None):
+    def put(self, rpath, form_data=None, headers=None):
         """ Perform a PUT request against the iland cloud API given its
         resource path.
 
@@ -177,13 +189,16 @@ class Api(object):
 
         :param rpath: the resource path as a Python builtin String object
         :param form_data: a Python builtin dict object
+        :param headers: an optional dictionary of http headers to send with \
+                        the request
         :raises: ApiException: API requests returns an error
         :raises: UnauthorizedException: credentials / grants invalids
         :return: a JSON Object or a list of JSON Objects.
         """
-        return self._do_request(rpath, verb='PUT', form_data=form_data)
+        return self._do_request(rpath, verb='PUT', form_data=form_data,
+                                headers=headers)
 
-    def post(self, rpath, form_data=None):
+    def post(self, rpath, form_data=None, headers=None):
         """ Perform a POST request against the iland cloud API given its
         resource path.
 
@@ -191,24 +206,29 @@ class Api(object):
 
         :param rpath: the resource path as a Python builtin String object
         :param form_data: a Python builtin dict object
+        :param headers: an optional dictionary of http headers to send with \
+                        the request
         :raises: ApiException: API requests returns an error
         :raises: UnauthorizedException: credentials / grants invalids
         :return: a JSON Object or a list of JSON Objects.
         """
-        return self._do_request(rpath, verb='POST', form_data=form_data)
+        return self._do_request(rpath, verb='POST', form_data=form_data,
+                                headers=headers)
 
-    def delete(self, rpath):
+    def delete(self, rpath, headers=None):
         """ Perform a DELETE request against the iland cloud API given its
         resource path.
 
         `iland.Api` will refresh the access token if non valid.
 
         :param rpath:  the resource path as a Python builtin String object
+        :param headers: an optional dictionary of http headers to send with \
+                        the request
         :raises: ApiException: API requests returns an error
         :raises: UnauthorizedException: credentials / grants invalids
         :return: a JSON Object or a list of JSON Objects.
         """
-        return self._do_request(rpath, verb='DELETE')
+        return self._do_request(rpath, verb='DELETE', headers=headers)
 
     def get_access_token(self):
         """ Returns the access token in use for this session.

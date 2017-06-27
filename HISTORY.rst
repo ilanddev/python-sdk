@@ -7,6 +7,7 @@ History
 
 * Force iland API v0.8.
 * Update dev requirements.
+* Add support for passing additional headers with api requests.
 
 0.7.4 (2017-05-26)
 ------------------
