@@ -2,7 +2,7 @@
 History
 =======
 
-0.7.5 (unreleased)
+0.7.5 (2017-06-27)
 ------------------
 
 * Force iland API v0.8.
