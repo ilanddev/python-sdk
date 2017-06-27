@@ -13,6 +13,7 @@ Contents:
 
    readme
    usage
+   modules
    contributing
    authors
    history
