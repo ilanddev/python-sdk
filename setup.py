@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-
 try:
     from setuptools import setup
 except ImportError:
@@ -15,16 +14,11 @@ with open('README.rst') as readme_file:
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
-requirements = ['requests>=2.2.1'],
+with open('requirements.txt') as requirements_file:
+    requirements = requirements_file.read().splitlines()
 
-test_requirements = ['bumpversion==0.5.3',
-                     'wheel>=0.29.0',
-                     'watchdog==0.8.3',
-                     'flake8==3.3.0',
-                     'tox==2.7.0',
-                     'coverage==4.4.1',
-                     'Sphinx==1.6.2',
-                     'requests_mock==1.3.0'],
+with open('requirements_dev.txt') as requirements_dev_file:
+    test_requirements = requirements_dev_file.read().splitlines()
 
 setup(
     name='iland-sdk',
