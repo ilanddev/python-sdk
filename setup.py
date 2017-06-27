@@ -22,7 +22,7 @@ with open('requirements_dev.txt') as requirements_dev_file:
 
 setup(
     name='iland-sdk',
-    version='0.7.5',
+    version='version='0.7.5'',
     description="iland cloud Python SDK",
     long_description=readme + '\n\n' + history,
     author="iland Internet Solutions, Corp",
