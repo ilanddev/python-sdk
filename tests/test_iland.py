@@ -292,6 +292,19 @@ class TestIland(unittest.TestCase):
             req = self.api.get(rpath)
             self.assertEquals(user_data, req)
 
+    def test_with_proxies_set(self):
+        with requests_mock.mock() as m:
+            m.post(iland.ACCESS_URL,
+                   text=json.dumps(VALID_TOKEN_PAYLOAD),
+                   status_code=200)
+            rpath = '/user/jchirac'
+            user_data = {'username': 'jchirac'}
+            m.get(BASE_URL + rpath, text='XXXXX' + json.dumps(user_data),
+                  status_code=200)
+            self.api._proxies = {'https': 'https://10.10.10.10:3128'}
+            req = self.api.get(rpath)
+            self.assertEquals(user_data, req)
+
     def test_get_with_extra_header(self):
         with requests_mock.mock() as m:
             m.post(iland.ACCESS_URL,
