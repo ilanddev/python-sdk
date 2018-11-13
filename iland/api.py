@@ -123,8 +123,8 @@ class Api(object):
 
         default_headers = {
             'Authorization': 'Bearer %s' % self._get_access_token_string(),
-            'Content-Type': 'application/vnd.ilandcloud.api.v0.8+json',
-            'Accept': 'application/vnd.ilandcloud.api.v0.8+json'
+            'Content-Type': 'application/vnd.ilandcloud.api.v0.9+json',
+            'Accept': 'application/vnd.ilandcloud.api.v0.9+json'
         }
 
         merged_headers = default_headers.copy()
