@@ -139,7 +139,7 @@ class TestIland(unittest.TestCase):
                    status_code=200)
             rpath = '/user/jchirac'
             user_data = {'username': 'jchirac'}
-            m.get(BASE_URL + rpath, text='XXXXX' + json.dumps(user_data),
+            m.get(BASE_URL + rpath, text=json.dumps(user_data),
                   status_code=200)
             req = self.api.get(rpath)
             self.assertEquals(user_data, req)
@@ -151,7 +151,7 @@ class TestIland(unittest.TestCase):
                    status_code=200)
             rpath = '/user/jchirac'
             user_data = {'username': 'jchirac'}
-            m.get(BASE_URL + rpath, text='XXXXX' + json.dumps(user_data),
+            m.get(BASE_URL + rpath, text=json.dumps(user_data),
                   status_code=201)
             req = self.api.get(rpath)
             self.assertEquals(user_data, req)
@@ -163,7 +163,7 @@ class TestIland(unittest.TestCase):
                    status_code=200)
             rpath = '/user/jchirac'
             user_data = {'username': 'jchirac'}
-            m.get(BASE_URL + rpath, text='XXXXX' + json.dumps(user_data),
+            m.get(BASE_URL + rpath, text=json.dumps(user_data),
                   status_code=202)
             req = self.api.get(rpath)
             self.assertEquals(user_data, req)
@@ -175,7 +175,7 @@ class TestIland(unittest.TestCase):
                    status_code=200)
             rpath = '/user/jchirac'
             user_data = {'username': 'jchirac'}
-            m.get(BASE_URL + rpath, text='XXXXX' + json.dumps(user_data),
+            m.get(BASE_URL + rpath, text=json.dumps(user_data),
                   status_code=204)
             req = self.api.get(rpath)
             self.assertEquals(user_data, req)
@@ -187,7 +187,7 @@ class TestIland(unittest.TestCase):
                    status_code=200)
             rpath = '/user/jchirac'
             user_data = {'username': 'jchirac'}
-            m.get(BASE_URL + rpath, text='XXXXX' + json.dumps(user_data),
+            m.get(BASE_URL + rpath, text=json.dumps(user_data),
                   status_code=400)
             with self.assertRaises(iland.ApiException):
                 self.api.get(rpath)
@@ -199,7 +199,7 @@ class TestIland(unittest.TestCase):
                    status_code=200)
             rpath = '/user/jchirac'
             user_data = {'username': 'jchirac'}
-            m.get(BASE_URL + rpath, text='XXXXX' + json.dumps(user_data),
+            m.get(BASE_URL + rpath, text=json.dumps(user_data),
                   status_code=500)
             with self.assertRaises(iland.ApiException):
                 self.api.get(rpath)
@@ -211,7 +211,7 @@ class TestIland(unittest.TestCase):
                    status_code=200)
             rpath = '/user/jchirac'
             user_data = {'username': 'jchirac'}
-            m.post(BASE_URL + rpath, text='XXXXX' + json.dumps(user_data),
+            m.post(BASE_URL + rpath, text=json.dumps(user_data),
                    status_code=200)
             req = self.api.post(rpath, form_data={'a': 'b'})
             self.assertEquals(user_data, req)
@@ -223,7 +223,7 @@ class TestIland(unittest.TestCase):
                    status_code=200)
             rpath = '/user/jchirac'
             user_data = {'username': 'jchirac'}
-            m.post(BASE_URL + rpath, text='XXXXX' + json.dumps(user_data),
+            m.post(BASE_URL + rpath, text=json.dumps(user_data),
                    status_code=200)
             req = self.api.post(rpath)
             self.assertEquals(user_data, req)
@@ -235,7 +235,7 @@ class TestIland(unittest.TestCase):
                    status_code=200)
             rpath = '/user/jchirac'
             user_data = {'username': 'jchirac'}
-            m.put(BASE_URL + rpath, text='XXXXX' + json.dumps(user_data),
+            m.put(BASE_URL + rpath, text=json.dumps(user_data),
                   status_code=200)
             req = self.api.put(rpath, form_data={'a': 'b'})
             self.assertEquals(user_data, req)
@@ -247,7 +247,7 @@ class TestIland(unittest.TestCase):
                    status_code=200)
             rpath = '/user/jchirac'
             user_data = {'username': 'jchirac'}
-            m.put(BASE_URL + rpath, text='XXXXX' + json.dumps(user_data),
+            m.put(BASE_URL + rpath, text=json.dumps(user_data),
                   status_code=200)
             req = self.api.put(rpath)
             self.assertEquals(user_data, req)
@@ -259,7 +259,7 @@ class TestIland(unittest.TestCase):
                    status_code=200)
             rpath = '/user/jchirac'
             user_data = {'username': 'jchirac'}
-            m.delete(BASE_URL + rpath, text='XXXXX' + json.dumps(user_data),
+            m.delete(BASE_URL + rpath, text=json.dumps(user_data),
                      status_code=200)
             req = self.api.delete(rpath)
             self.assertEquals(user_data, req)
@@ -271,7 +271,7 @@ class TestIland(unittest.TestCase):
                    status_code=200)
             rpath = '/user/jchirac'
             user_data = {'username': 'jchirac'}
-            m.delete(BASE_URL + rpath, text='XXXXX' + json.dumps(user_data),
+            m.delete(BASE_URL + rpath, text=json.dumps(user_data),
                      status_code=200)
             with self.assertRaises(iland.ApiException):
                 self.api._do_request(rpath, verb='ACK')
@@ -287,7 +287,7 @@ class TestIland(unittest.TestCase):
                    status_code=200)
             rpath = '/user/jchirac'
             user_data = {'username': 'jchirac'}
-            m.get(iland.BASE_URL + rpath, text='XXXXX' + json.dumps(user_data),
+            m.get(iland.BASE_URL + rpath, text=json.dumps(user_data),
                   status_code=200)
             req = self.api.get(rpath)
             self.assertEquals(user_data, req)
@@ -299,7 +299,7 @@ class TestIland(unittest.TestCase):
                    status_code=200)
             rpath = '/user/jchirac'
             user_data = {'username': 'jchirac'}
-            m.get(BASE_URL + rpath, text='XXXXX' + json.dumps(user_data),
+            m.get(BASE_URL + rpath, text=json.dumps(user_data),
                   status_code=200)
             self.api._proxies = {'https': 'https://10.10.10.10:3128'}
             req = self.api.get(rpath)
@@ -312,7 +312,7 @@ class TestIland(unittest.TestCase):
                    status_code=200)
             rpath = '/user/jchirac'
             user_data = {'username': 'jchirac'}
-            m.get(BASE_URL + rpath, text='XXXXX' + json.dumps(user_data),
+            m.get(BASE_URL + rpath, text=json.dumps(user_data),
                   request_headers={'Host': 'api.ilandcloud.com'},
                   status_code=200)
             req = self.api.get(rpath, headers={'Host': 'api.ilandcloud.com'})
@@ -325,7 +325,7 @@ class TestIland(unittest.TestCase):
                    status_code=200)
             rpath = '/user/jchirac'
             user_data = {'username': 'jchirac'}
-            m.get(BASE_URL + rpath, text='XXXXX' + json.dumps(user_data),
+            m.get(BASE_URL + rpath, text=json.dumps(user_data),
                   status_code=200)
             # Set Accept to text/csv but it's ignored by api, so we get json
             req = self.api.get(rpath, headers={'Accept': 'text/csv'})

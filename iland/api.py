@@ -5,6 +5,7 @@
 import json
 import time
 
+from json.decoder import JSONDecodeError
 import requests
 
 from .constant import BASE_URL, ACCESS_URL, REFRESH_URL
@@ -123,9 +124,11 @@ class Api(object):
 
         default_headers = {
             'Authorization': 'Bearer %s' % self._get_access_token_string(),
-            'Content-Type': 'application/vnd.ilandcloud.api.v0.8+json',
-            'Accept': 'application/vnd.ilandcloud.api.v0.8+json'
+            'Accept': 'application/vnd.ilandcloud.api.v1.0+json'
         }
+        if verb in ('PUT', 'POST'):
+            default_headers[
+                'Content-Type'] = 'application/json'
 
         merged_headers = default_headers.copy()
 
@@ -159,9 +162,10 @@ class Api(object):
         else:
             raise ApiException({'message': 'Unsupported HTTP verb %s' % verb})
 
-        # iland cloud API prefix have to be ignored because they are here to
-        # prevent JSON Hijacking
-        json_obj = json.loads(r.content[5:].decode('UTF8'))
+        try:
+            json_obj = r.json()
+        except JSONDecodeError:
+            raise ApiException(r.content)
         if r.status_code not in [200, 201, 202, 204]:
             raise ApiException(json_obj)
         return json_obj
