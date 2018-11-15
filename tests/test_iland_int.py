@@ -54,64 +54,59 @@ class TestIlandInt(unittest.TestCase):
         pass
 
     def test_get(self):
-        user = self._api.get('/user/' + USERNAME)
+        user = self._api.get('/users/' + USERNAME)
         self.assertEqual(USERNAME, user.get('name'))
         self.assertTrue(len(user.keys()) > 5)
 
     def test_post(self):
-        user_alert_emails = self._api.get('/user/' + USERNAME +
+        user_alert_emails = self._api.get('/users/' + USERNAME +
                                           '/alert-emails')
         self.assertTrue(len(user_alert_emails['emails']) >= 1)
         self.assertEquals(user_alert_emails['username'], USERNAME)
 
         old_user_alert_emails = user_alert_emails
-        user_alert_emails = {'emails': ['test@iland.com', 'test2@iland.com'],
-                             'username': USERNAME}
-        self._api.post('/user/' + USERNAME + '/alert-emails',
+        user_alert_emails = {'emails': ['test@iland.com', 'test2@iland.com'], }
+        self._api.post('/users/' + USERNAME + '/actions/update-alert-emails',
                        user_alert_emails)
 
-        self.assertTrue(len(user_alert_emails['emails']) >= 1)
-        self.assertEquals(user_alert_emails['username'], USERNAME)
+        self.assertEqual(2, len(user_alert_emails['emails']))
 
-        self._api.post('/user/' + USERNAME + '/alert-emails',
+        self._api.post('/users/' + USERNAME + '/actions/update-alert-emails',
                        old_user_alert_emails)
         self.assertEquals(len(user_alert_emails['emails']), 2)
-        self.assertEquals(user_alert_emails['username'], USERNAME)
 
     def test_put_delete(self):
         vdc_uuid = VDC_UUID
-        vdc_md = self._api.get('/vdc/' + vdc_uuid + '/metadata')
-
-        self.assertEquals(len(vdc_md), 0)
+        vdc_md = self._api.get('/vdcs/' + vdc_uuid + '/metadata')
+        self.assertEquals(len(vdc_md['data']), 0)
 
         new_md = [{'type': 'string',
                    'value': 'B',
                    'access': 'READ_WRITE',
-                   'key': 'AAA'}]
-        new_md.extend(vdc_md)
-        self._api.put('/vdc/' + vdc_uuid + '/metadata',
-                      form_data=new_md)
+                   'key': 'AAA'}, ]
+        new_md.extend(vdc_md['data'])
+        self._api.put('/vdcs/' + vdc_uuid + '/metadata', form_data=new_md)
 
         time.sleep(10)
 
-        updated_md = self._api.get('/vdc/' + vdc_uuid + '/metadata')
-        self.assertEquals(len(updated_md), 1)
+        updated_md = self._api.get('/vdcs/' + vdc_uuid + '/metadata')
+        self.assertEquals(len(updated_md['data']), 1)
 
-        self._api.delete('/vdc/' + vdc_uuid + '/metadata/' + 'AAA')
+        self._api.delete('/vdcs/' + vdc_uuid + '/metadata/' + 'AAA')
 
         time.sleep(10)
 
-        updated_md = self._api.get('/vdc/' + vdc_uuid + '/metadata')
-        self.assertEquals(len(updated_md), 0)
+        updated_md = self._api.get('/vdcs/' + vdc_uuid + '/metadata')
+        self.assertEquals(len(updated_md['data']), 0)
 
     def test_get_with_host_header(self):
-        user = self._api.get('/user/' + USERNAME,
+        user = self._api.get('/users/' + USERNAME,
                              headers={'Host': 'api.ilandcloud.com'})
         self.assertEqual(USERNAME, user.get('name'))
         self.assertTrue(len(user.keys()) > 5)
 
     def test_get_with_disallowed_header(self):
-        user = self._api.get('/user/' + USERNAME,
+        user = self._api.get('/users/' + USERNAME,
                              headers={'Accept': 'text/csv'})
         self.assertEqual(USERNAME, user.get('name'))
         self.assertTrue(len(user.keys()) > 5)
@@ -151,6 +146,6 @@ class TestIlandInt(unittest.TestCase):
     @unittest.skipIf(not PROXIES, "No proxies defined")
     def test_get_with_proxy(self):
         self._api._proxies = PROXIES
-        user = self._api.get('/user/' + USERNAME)
+        user = self._api.get('/users/' + USERNAME)
         self.assertEqual(USERNAME, user.get('name'))
         self.assertTrue(len(user.keys()) > 5)
