@@ -21,14 +21,14 @@ iland cloud Python SDK
 
 * Free software: BSD License
 * Documentation: https://iland-sdk.readthedocs.org.
-* iland cloud v0.9 API doc: https://api.ilandcloud.com/doc/0.9/apidocs/.
+* iland cloud v1.0 API doc: https://us-east-1.api.ilandcloud.com/doc/current/.
 
 ============
 Introduction
 ============
 
 This library provides a pure Python interface for the
-`iland cloud API version 0.9 <https://www.iland.com/>`_.
+`iland cloud API version 1.0 <https://www.iland.com/>`_.
 It works with Python versions from 2.7+.
 
 `iland cloud <http://www.iland.com>`_ provides Enterprise-grade IaaS and this
