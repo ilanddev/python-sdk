@@ -5,7 +5,6 @@
 import json
 import time
 
-from json.decoder import JSONDecodeError
 import requests
 
 from .constant import BASE_URL, ACCESS_URL, REFRESH_URL
@@ -35,7 +34,7 @@ class Api(object):
     def __init__(self, client_id, client_secret, username, password):
         """Instantiate a new iland.Api object.
 
-        :param client_id: the client identifier
+        :param clientf_id: the client identifier
         :param client_secret: the client secret
         :param username: the iland cloud username
         :param password: the iland cloud password
@@ -164,7 +163,7 @@ class Api(object):
 
         try:
             json_obj = r.json()
-        except JSONDecodeError:
+        except ValueError:
             raise ApiException(r.content)
         if r.status_code not in [200, 201, 202, 204]:
             raise ApiException(json_obj)

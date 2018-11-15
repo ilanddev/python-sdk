@@ -2,10 +2,11 @@
 History
 =======
 
-0.7.6 (unreleased)
+1.0.0 (2018-11-15)
 ------------------
 
-*
+* Support for iland API v1.0
+* Update outdated dependencies
 
 0.7.5 (2017-06-27)
 ------------------

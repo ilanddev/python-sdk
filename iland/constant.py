@@ -3,7 +3,7 @@
 """A library that provides constants for the `iland.Api` object."""
 
 #: Base URL to the iland cloud API.
-BASE_URL = 'https://api.ilandcloud.com/v1'
+BASE_URL = 'https://api.ilandcloud.com/'
 
 #: Access token URL.
 ACCESS_URL = \
