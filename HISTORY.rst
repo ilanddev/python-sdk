@@ -8,6 +8,11 @@ History
 * Support for iland API v1.0
 * Update outdated dependencies
 
+0.9.0 (2018-11-13)
+------------------
+
+* iland API v0.9
+
 0.7.5 (2017-06-27)
 ------------------
 
