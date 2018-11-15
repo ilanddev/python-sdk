@@ -34,7 +34,7 @@ class Api(object):
     def __init__(self, client_id, client_secret, username, password):
         """Instantiate a new iland.Api object.
 
-        :param clientf_id: the client identifier
+        :param client_id: the client identifier
         :param client_secret: the client secret
         :param username: the iland cloud username
         :param password: the iland cloud password
