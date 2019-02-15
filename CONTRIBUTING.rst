@@ -112,3 +112,7 @@ Tips
 To run a subset of tests::
 
     $ python -m unittest tests.test_iland
+
+To run an individual test::
+
+    $ python -m unittest tests.test_iland.TestIland.<test_method_name>
