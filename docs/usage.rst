@@ -37,4 +37,10 @@ and set the ``_proxies`` attribute on the api object::
     >>> api._proxies = {'https': 'https://10.10.1.10:3128'}
     >>> user = api.get('/user/' + USERNAME)
 
+The ``get``, ``post``, ``put``, and ``delete`` methods can accept an optional
+``_timeout`` parameter that is passed to ``requests``::
+
+    >>> user = api.get('/user/' + USERNAME, timeout=5.0)
+
 .. _proxies: http://docs.python-requests.org/en/master/user/advanced/#proxies
+.. _timeout: http://docs.python-requests.org/en/master/user/quickstart/#timeouts

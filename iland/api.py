@@ -112,7 +112,8 @@ class Api(object):
         token_string = self._get_access_token()['access_token']
         return token_string
 
-    def _do_request(self, rpath, verb='GET', form_data=None, headers=None):
+    def _do_request(self, rpath, verb='GET', form_data=None, headers=None,
+                    timeout=None):
         self._refresh_token()
         data = None
         if form_data is not None:
@@ -141,7 +142,8 @@ class Api(object):
 
         request_params = {
             'headers': merged_headers,
-            'verify':  self._verify_ssl
+            'verify':  self._verify_ssl,
+            'timeout': timeout
         }
 
         if verb in ('PUT', 'POST'):
@@ -169,7 +171,7 @@ class Api(object):
             raise ApiException(json_obj)
         return json_obj
 
-    def get(self, rpath, headers=None):
+    def get(self, rpath, headers=None, timeout=None):
         """ Perform a GET request against the iland cloud API given its
         resource path.
 
@@ -182,9 +184,9 @@ class Api(object):
         :raises: UnauthorizedException: credentials / grants invalids
         :return: a JSON Object or a list of JSON Objects.
         """
-        return self._do_request(rpath, headers=headers)
+        return self._do_request(rpath, headers=headers, timeout=timeout)
 
-    def put(self, rpath, form_data=None, headers=None):
+    def put(self, rpath, form_data=None, headers=None, timeout=None):
         """ Perform a PUT request against the iland cloud API given its
         resource path.
 
@@ -201,7 +203,7 @@ class Api(object):
         return self._do_request(rpath, verb='PUT', form_data=form_data,
                                 headers=headers)
 
-    def post(self, rpath, form_data=None, headers=None):
+    def post(self, rpath, form_data=None, headers=None, timeout=None):
         """ Perform a POST request against the iland cloud API given its
         resource path.
 
@@ -218,7 +220,7 @@ class Api(object):
         return self._do_request(rpath, verb='POST', form_data=form_data,
                                 headers=headers)
 
-    def delete(self, rpath, headers=None):
+    def delete(self, rpath, headers=None, timeout=None):
         """ Perform a DELETE request against the iland cloud API given its
         resource path.
 

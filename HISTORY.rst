@@ -2,6 +2,11 @@
 History
 =======
 
+1.0.2 (2019-02-15)
+------------------
+
+* Added support for `timeout` parameter to `get`/`post`/`put`/`delete` methods
+
 1.0.1 (2018-11-15)
 ------------------
 

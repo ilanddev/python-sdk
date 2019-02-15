@@ -330,3 +330,15 @@ class TestIland(unittest.TestCase):
             # Set Accept to text/csv but it's ignored by api, so we get json
             req = self.api.get(rpath, headers={'Accept': 'text/csv'})
             self.assertEquals(user_data, req)
+
+    def test_get_with_timeout(self):
+        with requests_mock.mock() as m:
+            m.post(iland.ACCESS_URL,
+                   text=json.dumps(VALID_TOKEN_PAYLOAD),
+                   status_code=200)
+            rpath = '/user/jchirac'
+            user_data = {'username': 'jchirac'}
+            m.get(BASE_URL + rpath, text=json.dumps(user_data),
+                  status_code=200)
+            req = self.api.get(rpath, timeout=5.0)
+            self.assertEquals(user_data, req)
