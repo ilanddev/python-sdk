@@ -46,6 +46,12 @@ Check out the latest development version anonymously with::
     $ cd python-sdk
 
 ============
+Documentation
+============
+
+For documentation on using iland's Python SDK check out our `Wiki <https://github.com/ilanddev/python-sdk/wiki>`_. 
+
+============
 Installation
 ============
 
