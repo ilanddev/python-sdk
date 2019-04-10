@@ -9,24 +9,24 @@ PASSWORD = ''
 api = iland.Api(client_id=CLIENT_ID, client_secret=CLIENT_SECRET, username=USERNAME, password=PASSWORD)
 
 def main():
-    vdc_uuid = print_entity_inventory('IAAS_VDC')
+    vdc_uuid = print_entity_inventory()
     vapp_uuid = create_scratch_vapp(vdc_uuid)
     delete_vapp(vapp_uuid)
 
 '''
-This function gets a user's inventory with the GET endpoint /users/{username}/inventory and filters to get the specified
-entity type. In this case I am getting all the vDCs the user has access to so I pass IAAS_VDC.
-Besides printing all the vDCS, this function lazily grabs the first vDC uuid for the scratch vApp that we create below.
+This function gets a user's inventory with the GET endpoint /users/{username}/inventory and filters to get vDCS, vApps and VMs. 
+In this case I am printing all the vDCs the user has access. I also show how to get vApps and VMs but don't print them.
+Besides printing all the vDCS, this function lazily grabs the a vDC uuid for the scratch vApp that we create below.
 '''
-def print_entity_inventory(entity_type):
+def print_entity_inventory():
     inventory = api.get('/users/%s/inventory' % USERNAME)['inventory']
-    vdc_uuid = ''
-    for i in inventory:
-        vdcs = i['entities'][entity_type]
-        for vdc in vdcs:
-            if vdc_uuid == '':
-                vdc_uuid = vdc['uuid']
-            print(vdc['name'] + ' ' + vdc['uuid'])
+    for item in inventory:
+        vdcs = item['entities']['IAAS_VDC']
+        vapps = item['entities']['IAAS_VAPP']
+        vms = item['entities']['IAAS_VM']
+    for vdc in vdcs:
+        vdc_uuid = vdc['uuid']
+        print(vdc['name'] + ' ' + vdc['uuid'])
     return vdc_uuid
 
 '''
@@ -41,7 +41,6 @@ def create_scratch_vapp(vdc_uuid):
     build_vapp_task = api.post('/vdcs/%s/actions/build-vapp' % vdc_uuid, scratch_vapp)
     wait_for_synced_task(build_vapp_task['uuid'])
     vapps = api.get('/vdcs/%s/vapps' % vdc_uuid)
-    vapp_uuid = ''
     for vapp in vapps['data']:
         if vapp['name'] == 'Example vApp Name':
             vapp_uuid = vapp['uuid']
