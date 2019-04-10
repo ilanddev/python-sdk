@@ -20,10 +20,10 @@ It then gets the vApp uuid of the vApp of the name provided and returns the uuid
 '''
 def print_and_get_vapp():
     vapp_name = 'Example vApp Name'
-    vapp_uuid = ''
     inventory = api.get('/users/%s/inventory' % USERNAME)['inventory']
-    for i in inventory:
-        vapps = i['entities']['IAAS_VAPP']
+    for item in inventory:
+        vapps = item['entities']['IAAS_VAPP']
+        vms = item['entities']['IAAS_VM']
         for vapp in vapps:
             if vapp['name'] == vapp_name:
                 vapp_uuid = vapp['uuid']
