@@ -11,7 +11,7 @@ History
 1.0.2 (2019-02-15)
 ------------------
 
-* Added support for `timeout` parameter to `get`/`post`/`put`/`delete` methods
+* Added support for ``timeout`` parameter to ``get``/``post``/``put``/``delete`` methods
 
 1.0.1 (2018-11-15)
 ------------------
@@ -34,27 +34,27 @@ History
 
 * Force iland API v0.8.
 * Update dev requirements.
-* Dependencies definition shared with `setup.py`
+* Dependencies definition shared with ``setup.py``
 * Add support for passing additional headers with api requests.
 
 0.7.4 (2017-05-26)
 ------------------
 
-* Use a `requests.Session` object for all api calls
-* Remove `base_url`, `access_token_url`, and `verify_ssl` from Api constructor
+* Use a ``requests.Session`` object for all api calls
+* Remove ``base_url``, ``access_token_url``, and ``verify_ssl`` from Api constructor
 
 0.7.3 (2017-05-18)
 ------------------
 
-*  Fix internal use of `REFRESH_URL` when overriding `access_token_url` at constructor time.
+*  Fix internal use of ``REFRESH_URL`` when overriding ``access_token_url`` at constructor time.
 
 0.7.2 (2017-05-17)
 ------------------
 
-* optional `access_url_token` `Api` constructor param allowing one to override
+* optional ``access_url_token`` ``Api`` constructor param allowing one to override
   token exchange URL.
 * update dependencies.
-* lower required version of `requests` module from `==2.14.2` to `>=2.2.1`.
+* lower required version of ``requests`` module from ``==2.14.2`` to ``>=2.2.1``.
 
 0.7.1 (2017-02-08)
 ------------------
@@ -81,7 +81,7 @@ History
 -----------------
 
 * promote to beta status
-* extra `verify_ssl` `Api` constructor to allow one to not verify endpoints SSL
+* extra ``verify_ssl`` ``Api`` constructor to allow one to not verify endpoints SSL
 
 0.4.0 (2016-3-08)
 -----------------

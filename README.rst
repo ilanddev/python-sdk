@@ -45,11 +45,11 @@ Check out the latest development version anonymously with::
     $ git clone https://github.com/ilanddev/python-sdk.git
     $ cd python-sdk
 
-============
+=============
 Documentation
-============
+=============
 
-For documentation on using iland's Python SDK check out our `Wiki <https://github.com/ilanddev/python-sdk/wiki>`_. 
+For documentation on using iland's Python SDK check out our `Wiki <https://github.com/ilanddev/python-sdk/wiki>`_.
 
 ============
 Installation
