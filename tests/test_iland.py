@@ -6,9 +6,10 @@ import json
 import time
 import unittest
 
+import iland
+
 import requests_mock
 
-import iland
 
 BASE_URL = 'http://example.com/ecs'
 
