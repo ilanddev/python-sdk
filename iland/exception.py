@@ -9,17 +9,17 @@ class ApiException(Exception):
     @property
     def error(self):
         """Returns the first argument used to construct this error."""
-        return self.args[0]
+        return self.args[0].get('type')
 
     @property
     def message(self):
         """Returns the second argument used to construct this error."""
-        return self.args[1]
+        return self.args[0].get('message')
 
     @property
     def detail_message(self):
         """Returns the third argument used to construct this error."""
-        return self.args[2]
+        return self.args[0].get('detail_message')
 
 
 class UnauthorizedException(ApiException):
