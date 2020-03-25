@@ -2,6 +2,12 @@
 History
 =======
 
+1.0.3 (2020-03-25)
+------------------
+
+* handle refresh token expiration and max session length expiration (#26)
+* Wiki and Python SDK examples: https://github.com/ilanddev/python-sdk/wiki
+
 1.0.2 (2019-02-15)
 ------------------
 
