@@ -14,10 +14,12 @@ import requests_mock
 BASE_URL = 'http://example.com/ecs'
 
 VALID_TOKEN_PAYLOAD = {'expires_in': 12,
+                       'refresh_expires_in': 17,
                        'access_token': 'AZERTYUIOP',
                        'refresh_token': 'BLABLABLA'}
 
 VALID_REFRESH_TOKEN_PAYLOAD = {'expires_in': 12,
+                               'refresh_expires_in': 17,
                                'access_token': 'QWERTYUIOP',
                                'refresh_token': 'BLOBLOBLO'}
 
@@ -105,33 +107,56 @@ class TestIland(unittest.TestCase):
 
     def test_refresh_token_ko_400(self):
         with requests_mock.mock() as m:
-            m.post(iland.ACCESS_URL,
-                   text=json.dumps(VALID_TOKEN_PAYLOAD),
-                   status_code=200)
-            m.post(iland.REFRESH_URL,
-                   text=json.dumps(VALID_REFRESH_TOKEN_PAYLOAD),
-                   status_code=400)
+            login_spy = m.post(iland.ACCESS_URL,
+                               text=json.dumps(VALID_TOKEN_PAYLOAD),
+                               status_code=200)
+            refresh_spy = m.post(iland.REFRESH_URL,
+                                 text=json.dumps(VALID_REFRESH_TOKEN_PAYLOAD),
+                                 status_code=400)
             self.api.login()
             self.assertEqual(VALID_TOKEN_PAYLOAD, self.api.get_access_token())
-            # let's wait for expiration
+            # wait for access token expiration. since the refresh endpoint
+            # returns a 400, we expect that a new login will be initiated
+            # because the existing session can no longer be refreshed
             time.sleep(5)
-            with self.assertRaises(iland.UnauthorizedException):
-                self.api.refresh_access_token()
+            self.assertEqual(VALID_REFRESH_TOKEN_PAYLOAD,
+                             self.api.refresh_access_token())
+            self.assertEqual(1, refresh_spy.call_count)
+            self.assertEqual(2, login_spy.call_count)
 
     def test_refresh_token_ko_500(self):
         with requests_mock.mock() as m:
-            m.post(iland.ACCESS_URL,
-                   text=json.dumps(VALID_TOKEN_PAYLOAD),
-                   status_code=200)
-            m.post(iland.REFRESH_URL,
-                   text=json.dumps(VALID_REFRESH_TOKEN_PAYLOAD),
-                   status_code=500)
+            login_spy = m.post(iland.ACCESS_URL,
+                               text=json.dumps(VALID_TOKEN_PAYLOAD),
+                               status_code=200)
+            refresh_spy = m.post(iland.REFRESH_URL,
+                                 text=json.dumps(VALID_REFRESH_TOKEN_PAYLOAD),
+                                 status_code=500)
             self.api.login()
             self.assertEqual(VALID_TOKEN_PAYLOAD, self.api.get_access_token())
-            # let's wait for expiration
+            # wait for access token expiration. since the refresh endpoint
+            # returns a 400, we expect that a new login will be initiated
+            # because the existing session can no longer be refreshed
             time.sleep(5)
-            with self.assertRaises(iland.UnauthorizedException):
-                self.api.refresh_access_token()
+            self.assertEqual(VALID_REFRESH_TOKEN_PAYLOAD,
+                             self.api.refresh_access_token())
+            self.assertEqual(1, refresh_spy.call_count)
+            self.assertEqual(2, login_spy.call_count)
+
+    def test_refresh_token_expired(self):
+        with requests_mock.mock() as m:
+            login_spy = m.post(iland.ACCESS_URL,
+                               text=json.dumps(VALID_TOKEN_PAYLOAD),
+                               status_code=200)
+            self.api.login()
+            self.assertEqual(VALID_TOKEN_PAYLOAD, self.api.get_access_token())
+            # wait for refresh token expiration. since the refresh token
+            # expired, we expect that a new login will be initiated because
+            # the existing session can no longer be refreshed
+            time.sleep(8)
+            self.assertEqual(VALID_TOKEN_PAYLOAD,
+                             self.api.refresh_access_token())
+            self.assertEqual(2, login_spy.call_count)
 
     def test_get_ok_200(self):
         with requests_mock.mock() as m:
