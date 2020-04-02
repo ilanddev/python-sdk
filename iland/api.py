@@ -27,6 +27,7 @@ class Api(object):
 
     _token = None
     _token_expiration_time = None
+    _refresh_token_expiration_time = None
 
     _verify_ssl = True
     _session = None
@@ -79,13 +80,15 @@ class Api(object):
 
     def _set_token_expiration_time(self):
         time_buffer = 10
+        now = int(round(time.time() * 1000))
         self._token_expiration_time = \
-            ((self._token['expires_in'] - time_buffer) * 1000) + \
-            int(round(time.time() * 1000))
+            ((self._token['expires_in'] - time_buffer) * 1000) + now
+        self._refresh_token_expiration_time = \
+            ((self._token['refresh_expires_in'] - time_buffer) * 1000) + now
 
     def _refresh_token(self):
         if not self._valid_token():
-            if self._token is not None:
+            if self._valid_refresh_token():
                 LOG.info("SSO Request %s" % self._refresh_token_url)
                 params = {'client_id': self._client_id,
                           'client_secret': self._client_secret,
@@ -96,16 +99,24 @@ class Api(object):
                                        verify=self._verify_ssl)
                 json_payload = json.loads(r.content.decode('ascii'))
                 if r.status_code not in [200, 201, 202]:
-                    raise UnauthorizedException(json_payload)
+                    self._token = None
+                    self._get_access_token()
                 self._token = json_payload
                 self._set_token_expiration_time()
             else:
                 self._get_access_token()
         return self._token
 
+    def _valid_refresh_token(self):
+        if self._token is not None:
+            now = int(round(time.time() * 1000))
+            return now < self._refresh_token_expiration_time
+        return False
+
     def _valid_token(self):
         if self._token is not None:
-            return int(round(time.time() * 1000)) < self._token_expiration_time
+            now = int(round(time.time() * 1000))
+            return now < self._token_expiration_time
         return False
 
     def _get_access_token_string(self):
