@@ -143,6 +143,17 @@ class TestIlandInt(unittest.TestCase):
         with self.assertRaises(ApiException):
             self._api.get('/doesnotexist')
 
+    def test_api_exception_properties(self):
+        with self.assertRaises(ApiException) as e:
+            self._api.get('/doesnotexist')
+        api_exception = e.exception
+        self.assertEqual(api_exception.error,
+                         'NotFoundError')
+        self.assertEqual(api_exception.message,
+                         'The specified resource does not exist.')
+        self.assertIn('Could not find resource for full path',
+                      api_exception.detail_message)
+
     @unittest.skipIf(not PROXIES, "No proxies defined")
     def test_get_with_proxy(self):
         self._api._proxies = PROXIES
